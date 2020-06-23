@@ -1,0 +1,151 @@
+/* last edited 2020年6月18日 木曜日 10:32 */
+
+body {
+  padding: 20px;
+  font-family: Meiryo;
+  text-align: center;
+  /* background-color: gray; */
+}
+
+button[name=btn_login] {
+  margin-top: 10px;
+  padding: 5px 20px;
+  font-size: 100%;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  background-color: #2615c2;
+}
+
+button[name=btn_register] {
+  margin-top: 10px;
+  padding: 5px 20px;
+  font-size: 100%;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  background-color: #11700f;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+  padding: 20px 0;
+  color: black;
+  font-size: 200%;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  text-align: left;
+}
+
+.error_list {
+  padding: 10px 10px 50px 50px;
+  color: #ff2e5a;
+  font-size: 100%;
+  font-weight: bolder;
+  text-align: center;
+  border: 5px solid #ff2e5a;
+  border-radius: 5px;
+}
+
+form {
+  margin: 0 auto;
+  width: 500px;
+}
+
+input.login_regist {
+  padding: 5px 10px;
+  font-size: 86%;
+  border: none;
+  border-radius: 3px;
+  background: #ddf0ff;
+  width: 100%;
+}
+
+textarea[name=contact_issue] {
+  padding: 5px 10px;
+  width: 50%;
+  height: 120px;
+  font-size: 86%;
+  border: none;
+  border-radius: 3px;
+  background: #ddf0ff;
+}
+
+input[name=btn_confirm],
+input[name=btn_submit],
+input[name=btn_back],
+input[name=btn_top] {
+  margin-top: 10px;
+  padding: 5px 20px;
+  font-size: 100%;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 3px 0 #2887d1;
+  background: #4eaaf1;
+}
+
+input[name=btn_back] {
+  margin-right: 20px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #777;
+  background: #999;
+}
+
+.element_wrap {
+  margin-bottom: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  vertical-align: middle;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  vertical-align: middle;
+  width: 150px;
+}
+
+.element_wrap p {
+  display: inline-block;
+  margin: 0;
+  text-align: left;
+}
+
+select {
+  outline: none;
+  text-indent: 0.5px;
+  text-overflow: '';
+  background: #ddf0ff;
+  vertical-align: middle;
+  font-size: 86%;
+  padding: 5px 10px;
+  color: inherit;
+  border: none;
+  border-radius: 3px;
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+}
+
+select option {
+  background-color: #ddf0ff;
+  color: #333;
+  border: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #828c9a;
+}
