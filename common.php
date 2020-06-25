@@ -1,7 +1,7 @@
 <?php
     // last edited 2020年6月22日 月曜日 14:46
     require_once 'config.php';
-    require_once BASE_DIR . '/vendor/autoload.php';
+    // require_once BASE_DIR . '/vendor/autoload.php';
 
     // rewrite to PRODUCTION in production environment
     define('MODE', DEVELOPMENT);
