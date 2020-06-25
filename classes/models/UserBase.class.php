@@ -81,19 +81,19 @@
         {
             return $this->login_id;
         }
-        public function getUserPasswd($user_passwd)
+        public function getUserPasswd()
         {
             return $this->user_passwd;
         }
-        public function getDisplayName($display_name)
+        public function getDisplayName()
         {
             return $this->display_name;
         }
-        public function getRegisterDate($register_date)
+        public function getRegisterDate()
         {
             return $this->register_date;
         }
-        public function getDelFlag($del_flag)
+        public function getDelFlag()
         {
             return $this->del_flag;
         }

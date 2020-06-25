@@ -20,8 +20,8 @@
             $sql .= "login_id";
             $sql .= ", user_passwd";
             $sql .= ", display_name";
-            $sql .= ", del_flag";
-            $sql .= "FROM users_table";
+            $sql .= ", del_flag ";
+            $sql .= "FROM users_table ";
             $sql .= "WHERE login_id = :loginId ";
 
             $arr = array();
@@ -45,15 +45,13 @@
             $sql .= "'users_table' ";
             $sql .= "SET ";
             $sql .= "user_passwd = :password";
-            $sql .= ",  token = :token";
-            $sql .= ",  display_name = :displayName";
+            $sql .= ", display_name = :displayName";
             $sql .= ", del_flag = :delFlag";
             $sql .= "WHERE login_id = :loginId";
 
             $arr = array();
             $arr[':loginId'] = $user->getLoginId();
             $arr[':password'] = $user->getUserPasswd();
-            $arr[':token'] = $user->getToken();
             $arr[':displayName'] = $user->getDisplayName();
             $arr[':delFlag'] = $user->getDelFlag();
 
@@ -71,20 +69,17 @@
             $sql .= "(";
             $sql .= "login_id";
             $sql .= ", user_passwd";
-            $sql .= ",  token";
-            $sql .= ",  display_name";
+            $sql .= ", display_name";
             $sql .= ", del_flag";
             $sql .= ") VALUES (";
             $sql .= "NULL ";
             $sql .= ", :password";
-            $sql .= ", :token";
             $sql .= ", :displayName";
             $sql .= ", :delFlag";
             $sql .= ")";
 
             $arr = array();
             $arr[':password'] = $user->getUserPasswd();
-            $arr[':token'] = $user->getToken();
             $arr[':displayName'] = $user->getDisplayName();
             $arr[':delFlag'] = $user->getDelFlag();
 
