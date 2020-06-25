@@ -18,7 +18,7 @@
         // list of error message as array
         static private $errMessage = array (
             self::INVALID_ERR => 'An error occurred.',
-            self::INVALID_LOGIN_FAIL => 'Failed to login.',
+            self::INVALID_LOGIN_FAIL => 'Failed to login. Incorrect login ID and/or password.',
             self::APPLICATION_ERR => 'An application error occurred.',
             self::SYSTEM_ERR => 'A system error occurred. The administrator will be notified.',
             self::TEMPLATE_ERR => 'Cannot find template [%s].',

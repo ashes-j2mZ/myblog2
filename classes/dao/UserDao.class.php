@@ -3,7 +3,7 @@
     namespace classes\dao;
 
     use classes\common\Database;
-    use classes\model\User;
+    use classes\models\User;
 
     /**
      * User DAO class
@@ -70,18 +70,16 @@
             $sql .= "login_id";
             $sql .= ", user_passwd";
             $sql .= ", display_name";
-            $sql .= ", del_flag";
             $sql .= ") VALUES (";
-            $sql .= "NULL ";
+            $sql .= ":login_id";
             $sql .= ", :password";
             $sql .= ", :displayName";
-            $sql .= ", :delFlag";
             $sql .= ")";
 
             $arr = array();
+            $arr[':login_id'] = $user->getLoginId();
             $arr[':password'] = $user->getUserPasswd();
             $arr[':displayName'] = $user->getDisplayName();
-            $arr[':delFlag'] = $user->getDelFlag();
 
             return Database::insert($sql, $arr);
         }

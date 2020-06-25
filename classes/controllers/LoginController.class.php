@@ -3,7 +3,7 @@
   namespace classes\controllers;
 
   use classes\common\Database;
-  use classes\common\ExcepionCode;
+  use classes\common\ExceptionCode;
   use classes\common\InvalidErrorException;
   use classes\models\User;
 
@@ -106,10 +106,7 @@
      {
        $user = (isset($_SESSION[self::LOGIN_USER])) ? $_SESSION[self::LOGIN_USER] : null;
 
-       if (is_object($user) && $user->getLoginId() > 0) {
-        return;
-       }
-       header('Location: /');
+       return is_object($user);
      }
 
      /**

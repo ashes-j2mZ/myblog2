@@ -6,11 +6,17 @@
     use classes\common\Database;
     use classes\controllers\LoginController;
 
+    // initialize variables
+    $err_msg = null;
+
     // start session
     session_start();
-
     // sign in
-    LoginController::login();
+    try {
+        LoginController::login();
+    } catch (\Exception $e) {
+        $err_msg = $e->getMessage();
+    }
 
  ?>
 
@@ -25,10 +31,11 @@
     <body>
         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
         <h2>Sign in to My Blog</h2>
+        <?php echo is_null($err_msg) ? '' : '<p>' . $err_msg . '</p>'; ?>
         <form action="" method="post">
             <div class="element_wrap">
                 <label for="login_id">Login ID<label>
-                    <input type="text" name="login_id" value="<?php echo ( !empty($login_id) ) ? $login_id : '' ; ?>">
+                    <input type="text" name="login_id" value="">
             </div>
             <div class="element_wrap">
                 <label for="user_passwd">Password<label>

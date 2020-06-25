@@ -63,7 +63,7 @@
 
      <body>
          <br>
-         <h1><a href="php <?php echo BLOG_TOP; ?>">My Blog</a></h1>
+         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
          <?php if ($page_flag === 1): ?>
              <h2>Register as My Blog user with the following information. Continue?</h2>
              <div class="element_wrap">
@@ -90,7 +90,7 @@
 
          <?php elseif ($page_flag === 2): ?>
              <h2>Successfully registered as user.<br>Return to top page or sign in.</h2>
-             <a href="my_blog_home.php"><button type="button" name="btn_top">My Blog Top</button></a>
+             <a href="<?php echo BLOG_TOP; ?>"><button type="button" name="btn_top">My Blog Top</button></a>
              <a href="login.php"><button type="button" name="btn_login">Sign in</button></a>
 
          <?php else: ?>
