@@ -31,14 +31,23 @@ button[name=btn_register] {
   background-color: #11700f;
 }
 
-h1, h2 {
-  margin-bottom: 20px;
+h1 {
+  margin-bottom: 10px;
   padding: 20px 0;
   color: black;
   font-size: 200%;
   border-top: 1px solid #999;
   border-bottom: 1px solid #999;
   text-align: left;
+}
+
+h2 {
+  margin-bottom: 10px;
+  padding: 0 0 10px;
+  color: black;
+  font-size: 120%;
+  border-bottom: 1px solid #999;
+  text-align: center;
 }
 
 .error_list {
