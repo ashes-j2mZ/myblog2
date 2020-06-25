@@ -25,44 +25,37 @@
      */
     public static function login()
     {
-        // start session
-        session_start();
         // retrieve and sanitize input from login form
         if ( filter_input_array(INPUT_POST) ) {
             $login_id = filter_input(INPUT_POST, 'login_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, 'user_passwd', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            // check whether login ID exists in user database
-            try {
-                // begin transaction
-                Database::transaction();
+            // begin transaction
+            Database::transaction();
+            // find user by login ID
+            $loginUser = new User();
+            // check whether user with given login ID exists
+            if( $loginUser->findUser($login_id) == null ) {
+                $msg = nl2br("A user with this login ID does not exist.\n" . 'Try again or register from <a href="registration.php">here</a>.');
+            } else {
+                // check whether password matches
+                if ( $loginUser->checkPassword($password) ) {
+                    // commit transaction
+                    Database::commit();
+                    // prevent session fixation attacks
+                    session_regenerate_id(true);
+                    // save user information from database into session
+                    $_SESSION[self::LOGIN_USER] = $loginUser;
+                    // foreach ($loginUser as $key => $value) {
+                    //     $_SESSION[$key] = $value;
+                    // }
 
-                // find user by login ID
-                $sql = "SELECT * FROM users_table WHERE login_id = :login_id ";
-                $loginUser = Database::select( $sql, array(':login_id' => $login_id) );
-                if( empty($loginUser) ) {
-
-                    $msg = nl2br("A user with this login ID does not exist.\n" . 'Try again or register from <a href="registration.php">here</a>.');
+                    // return to top page
+                    header('Location: ' . BLOG_TOP);
                 } else {
-                    // check whether password matches
-                    if ( password_verify($password, $loginUser[0]['user_passwd']) ) {
-                        // commit transaction
-                        Database::commit();
-                        // prevent session fixation attacks
-                        session_regenerate_id(true);
-                        // save user information from database into session
-                        foreach ($loginUser[0] as $key => $value) {
-                            $_SESSION[$key] = $value;
-                        }
-                        // return to top page
-                        header('Location: ' . BLOG_TOP);
-                    } else {
-                        // commit transaction
-                        Database::commit();
-                        $msg = 'Incorrect login ID and/or password.';
-                    }
+                    // commit transaction
+                    Database::commit();
+                    throw new InvalidErrorException(ExceptionCode::INVALID_LOGIN_FAIL);
                 }
-            } catch (\PDOException $e) {
-                $msg = $e->getMessage();
             }
         }
       // // if input hasn't been submitted via POST, then stop
@@ -134,9 +127,23 @@
       */
       static public function logout()
       {
-        $_SESSION = [];
-        session_destroy();
-        header('Location: /');
+          if ( isset($_SESSION['loginUserModel']) ) {
+              // clear all session variables
+              $_SESSION = array();
+              // delete session cookies
+              if (ini_get("session.use_cookies")) {
+                  $params = session_get_cookie_params();
+                  setcookie(session_name(), '', time() - 42000,
+                      $params["path"], $params["domain"],
+                      $params["secure"], $params["httponly"]
+                  );
+              }
+              //Destroy session
+              session_destroy();
+          } else {
+              // redirect to top page
+              header('Location: ' . BLOG_TOP);
+          }
       }
 
   }

@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="forms/form.css">
   </head>
   <body>
-    <h1><a href="my_blog_home.php">My Blog</a></h1>
+    <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
     <p>Welcome to My Blog! Check out the latest entries by users.</p>
     <!-- 最新エントリ10件を表示 -->
     <p>Please login or register from here.</p>

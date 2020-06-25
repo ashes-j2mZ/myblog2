@@ -27,7 +27,6 @@
             $this->setLoginId($arrDao['login_id'])
             ->setDisplayName($arrDao['display_name'])
             ->setUserPasswd($arrDao['user_passwd'])
-            ->setToken($arrDao['token'])
             ->setDelFlag($arrDao['del_flag']);
             return $this;
         }
@@ -61,11 +60,6 @@
             $this->user_passwd = $user_passwd;
             return $this;
         }
-        public function setToken($token)
-        {
-            $this->token = $token;
-            return $this;
-        }
         public function setDisplayName($display_name)
         {
             $this->display_name = $display_name;
@@ -90,10 +84,6 @@
         public function getUserPasswd($user_passwd)
         {
             return $this->user_passwd;
-        }
-        public function getToken($token)
-        {
-            return $this->token;
         }
         public function getDisplayName($display_name)
         {

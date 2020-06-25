@@ -1,6 +1,9 @@
 <?php
     // last edited 2020年6月22日 月曜日 13:11
     namespace classes\models;
+
+    use classes\dao\UserDao;
+    
     /**
     * User class for My Blog.
     */
@@ -15,7 +18,7 @@
         public function findUser($id)
         {
             $dao = UserDao::getDao($id);
-            return (isset($dao[0])) ? $this->setProperty(reset($dao)) : null;
+            return ( isset($dao[0]) ) ? $this->setProperty( reset($dao) ) : null;
         }
 
         /**

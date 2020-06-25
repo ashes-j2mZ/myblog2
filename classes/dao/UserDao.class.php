@@ -19,9 +19,9 @@
             $sql = "SELECT ";
             $sql .= "login_id";
             $sql .= ", user_passwd";
-            $sql .= ",  display_name";
-            $sql .= ", del_flag ";
-            $sql .= "FROM users_table ";
+            $sql .= ", display_name";
+            $sql .= ", del_flag";
+            $sql .= "FROM users_table";
             $sql .= "WHERE login_id = :loginId ";
 
             $arr = array();

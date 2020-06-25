@@ -31,7 +31,7 @@
          <title>My Blog: Sign Out</title>
      </head>
      <body>
-         <h1><a href="my_blog_home.php">My Blog</a></h1>
+         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
          <p>Signed out from your account.</p>
          <a href="my_blog_home.php"><button type="button" name="btn_top">My Blog Top</button></a>
      </body>

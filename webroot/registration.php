@@ -63,7 +63,7 @@
 
      <body>
          <br>
-         <h1><a href="my_blog_home.php">My Blog</a></h1>
+         <h1><a href="php <?php echo BLOG_TOP; ?>">My Blog</a></h1>
          <?php if ($page_flag === 1): ?>
              <h2>Register as My Blog user with the following information. Continue?</h2>
              <div class="element_wrap">
