@@ -47,9 +47,6 @@
                         session_regenerate_id(true);
                         // save user information from database into session
                         $_SESSION[self::LOGIN_USER] = $loginUser;
-                        // foreach ($loginUser as $key => $value) {
-                        //     $_SESSION[$key] = $value;
-                        // }
 
                         // return to top page
                         header('Location: ' . BLOG_TOP);
@@ -61,44 +58,6 @@
                 }
             }
         }
-      // // if input hasn't been submitted via POST, then stop
-      // if (!filter_input_array(INPUT_POST)) {
-      //   return;
-      // }
-      //
-      //   // receive input from form
-      //   $login_id = filter_input(INPUT_POST, 'Login ID');
-      //   $password  = filter_input(INPUT_POST, 'Password');
-      //
-      //   // if either is empty, do nothing
-      //   if($login_id == '' || $password == '') {
-      //     return;
-      //   }
-      //
-      //   // begin transaction
-      //   Database::transaction();
-      //
-      //   // find user by login ID
-      //   $user = new User();
-      //   $user->findUser($login_id);
-      //
-      //   // check password
-      //   if (!$user->checkPassword($password)) {
-      //     Database::commit();
-      //     throw new InvalidErrorException(ExceptionCode::INVALID_LOGIN_FAIL);
-      //     }
-      //
-      //     // commit transaction
-      //     Database::commit();
-      //
-      //     // prevent session fixation attacks
-      //     session_regenerate_id(true);
-      //
-      //     // save to session
-      //     $_SESSION[self::LOGIN_USER] = $user;
-      //
-      //     // redirect to home page for Users
-      //     header(sprintf("location: %s"), self::TARGET_PAGE);
     }
 
     /**

@@ -31,22 +31,8 @@
             // insert data into users table
             $user->create();
             Database::commit();
-            // $msg = null;
-            // try {
-            //     // begin transaction
-            //     Database::transaction();
-            //     // insert information into user table
-            //     $sql = "INSERT INTO users_table (login_id, user_passwd, display_name) VALUES (:login_id, :user_passwd, :display_name)";
-            //     $arr = array( ':login_id' => $data['login_id'],
-            //                 ':user_passwd' => password_hash($data['user_passwd'], PASSWORD_BCRYPT),
-            //                 ':display_name' => $data['display_name'] );
-            //     Database::insert($sql, $arr);
-            //     // commit transaction
-            //     Database::commit();
-            // } catch (PDOException $e) {
-            //     $msg = $e->getMessage();
-            // }
         }
+        
         /**
          * validates user input from form and displays any errors
          * @param array $data

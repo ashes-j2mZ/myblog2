@@ -27,7 +27,7 @@
             $_SESSION['page'] = true;
         }
     } elseif (!empty($_POST['btn_submit'])) { // move to completion page
-        // if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
+        if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
             // add information to database
             RegistController::registration($sanitized);
             // clear all session variables
@@ -46,7 +46,7 @@
             unset($_POST);
             unset($sanitized);
             unset($input_errors);
-        // }
+        }
     } else {
         $page_flag = 0;
     }
