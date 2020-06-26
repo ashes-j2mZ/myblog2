@@ -6,7 +6,6 @@
 
     $username = null;
 
-    session_start();
     if ( LoginController::checkLogin() ) {
         $username = LoginController::getLoginUser()->getDisplayName();
     }

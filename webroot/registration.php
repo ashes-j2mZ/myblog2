@@ -24,17 +24,24 @@
         $input_errors = RegistController::validate($sanitized);
         if ( empty($input_errors) ) { // move to confirmation page
             $page_flag = 1;
-            // start session
-            session_start();
             $_SESSION['page'] = true;
         }
     } elseif (!empty($_POST['btn_submit'])) { // move to completion page
-        session_start();
         // if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
             // add information to database
             RegistController::registration($sanitized);
-            // destroy session
-            unset($_SESSION['page']);
+            // clear all session variables
+            $_SESSION = array();
+            // delete session cookies
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+            //Destroy session
+            session_destroy();
             $page_flag = 2;
             unset($_POST);
             unset($sanitized);

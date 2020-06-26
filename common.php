@@ -17,4 +17,6 @@
     require_once 'autoload.php';
     spl_autoload_register('autoloader');
 
+    session_start();
+
  ?>

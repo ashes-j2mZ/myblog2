@@ -11,8 +11,6 @@
     $err_msg = null;
     $sanitized = null;
 
-    // start session
-    session_start();
     // sign in
     if (!empty($_POST)) {
         $sanitized = Utility::sanitize($_POST);

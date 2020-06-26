@@ -5,8 +5,6 @@
 
     use classes\controllers\LoginController;
 
-    // start session
-    session_start();
     LoginController::logout();
 
  ?>
