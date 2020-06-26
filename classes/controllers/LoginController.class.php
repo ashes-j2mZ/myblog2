@@ -8,7 +8,7 @@
   use classes\models\User;
 
   /**
-   *
+   * contoller for user login and logout
    */
   class LoginController
   {

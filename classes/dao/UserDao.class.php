@@ -12,7 +12,10 @@
     {
 
         /**
-         * get array from login ID
+         * get array containing user information from login ID
+         * @param string $intLoginId
+         * @param int $intDelFlag = null
+         * @return array
          */
         public static function getDao($intLoginId, $intDelFlag = null)
         {
