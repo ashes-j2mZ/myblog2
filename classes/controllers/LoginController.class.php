@@ -29,32 +29,35 @@
         if ( filter_input_array(INPUT_POST) ) {
             $login_id = filter_input(INPUT_POST, 'login_id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, 'user_passwd', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            // begin transaction
-            Database::transaction();
-            // find user by login ID
-            $loginUser = new User();
-            // check whether user with given login ID exists
-            if( $loginUser->findUser($login_id) == null ) {
-                $msg = nl2br("A user with this login ID does not exist.\n" . 'Try again or register from <a href="registration.php">here</a>.');
-            } else {
-                // check whether password matches
-                if ( $loginUser->checkPassword($password) ) {
-                    // commit transaction
-                    Database::commit();
-                    // prevent session fixation attacks
-                    session_regenerate_id(true);
-                    // save user information from database into session
-                    $_SESSION[self::LOGIN_USER] = $loginUser;
-                    // foreach ($loginUser as $key => $value) {
-                    //     $_SESSION[$key] = $value;
-                    // }
-
-                    // return to top page
-                    header('Location: ' . BLOG_TOP);
+            // if only either ID or password is entered, do nothing
+            if ( !($login_id == null || $password == null) ) {
+                // begin transaction
+                Database::transaction();
+                // find user by login ID
+                $loginUser = new User();
+                // check whether user with given login ID exists
+                if( $loginUser->findUser($login_id) == null ) {
+                    $msg = nl2br("A user with this login ID does not exist.\n" . 'Try again or register from <a href="registration.php">here</a>.');
                 } else {
-                    // commit transaction
-                    Database::commit();
-                    throw new InvalidErrorException(ExceptionCode::INVALID_LOGIN_FAIL);
+                    // check whether password matches
+                    if ( $loginUser->checkPassword($password) ) {
+                        // commit transaction
+                        Database::commit();
+                        // prevent session fixation attacks
+                        session_regenerate_id(true);
+                        // save user information from database into session
+                        $_SESSION[self::LOGIN_USER] = $loginUser;
+                        // foreach ($loginUser as $key => $value) {
+                        //     $_SESSION[$key] = $value;
+                        // }
+
+                        // return to top page
+                        header('Location: ' . BLOG_TOP);
+                    } else {
+                        // commit transaction
+                        Database::commit();
+                        throw new InvalidErrorException(ExceptionCode::INVALID_LOGIN_FAIL);
+                    }
                 }
             }
         }

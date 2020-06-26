@@ -4,14 +4,19 @@
     require_once '../common.php';
 
     use classes\common\Database;
+    use classes\common\Utility;
     use classes\controllers\LoginController;
 
     // initialize variables
     $err_msg = null;
+    $sanitized = null;
 
     // start session
     session_start();
     // sign in
+    if (!empty($_POST)) {
+        $sanitized = Utility::sanitize($_POST);
+    }
     try {
         LoginController::login();
     } catch (\Exception $e) {
@@ -35,7 +40,7 @@
         <form action="" method="post">
             <div class="element_wrap">
                 <label for="login_id">Login ID<label>
-                    <input type="text" name="login_id" value="">
+                    <input type="text" name="login_id" value="<?php echo !empty($sanitized) ? $sanitized['login_id'] : ""; ?>">
             </div>
             <div class="element_wrap">
                 <label for="user_passwd">Password<label>
