@@ -21,21 +21,31 @@
          */
         public static function registration($data)
         {
-            $msg = null;
-            try {
-                // begin transaction
-                Database::transaction();
-                // insert information into user table
-                $sql = "INSERT INTO users_table (login_id, user_passwd, display_name) VALUES (:login_id, :user_passwd, :display_name)";
-                $arr = array( ':login_id' => $data['login_id'],
-                            ':user_passwd' => password_hash($data['user_passwd'], PASSWORD_BCRYPT),
-                            ':display_name' => $data['display_name'] );
-                Database::insert($sql, $arr);
-                // commit transaction
-                Database::commit();
-            } catch (PDOException $e) {
-                $msg = $e->getMessage();
-            }
+            // create user model for registration
+            $user = new User();
+            $user->setLoginId($data['login_id'])
+                    ->setUserPasswd( password_hash($data['user_passwd'], PASSWORD_BCRYPT) )
+                    ->setDisplayName($data['display_name']);
+            // begin transaction
+            Database::transaction();
+            // insert data into users table
+            $user->create();
+            Database::commit();
+            // $msg = null;
+            // try {
+            //     // begin transaction
+            //     Database::transaction();
+            //     // insert information into user table
+            //     $sql = "INSERT INTO users_table (login_id, user_passwd, display_name) VALUES (:login_id, :user_passwd, :display_name)";
+            //     $arr = array( ':login_id' => $data['login_id'],
+            //                 ':user_passwd' => password_hash($data['user_passwd'], PASSWORD_BCRYPT),
+            //                 ':display_name' => $data['display_name'] );
+            //     Database::insert($sql, $arr);
+            //     // commit transaction
+            //     Database::commit();
+            // } catch (PDOException $e) {
+            //     $msg = $e->getMessage();
+            // }
         }
         /**
          * validates user input from form and displays any errors
@@ -52,15 +62,9 @@
             } elseif ( mb_strlen($data['login_id']) < 6 || mb_strlen($data['login_id']) > 16 ) { // invalid length
                 $errors[] = "Your login ID must be between 6 and 16 characters long.";
             }  else { // ID already exists
-                try {
-                    $sql = "SELECT * FROM users_table WHERE login_id = :login_id ";
-                    $loginUser = Database::select( $sql, array(':login_id' => $data['login_id']) );
-                    // check whether ID exists
-                    if ( !empty($loginUser) ) {
-                        $errors[] = "A user with this login ID already exists.";
-                    }
-                } catch (\PDOException $e) {
-                    $errors[] = "An error occurred while trying to connect to the database.";
+                $user = new User();
+                if ($user->findUser($data['login_id']) !== null) {
+                    $errors[] = "A user with this login ID already exists.";
                 }
             }
 
