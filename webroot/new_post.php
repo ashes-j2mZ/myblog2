@@ -26,7 +26,6 @@
     if (!empty($_POST['btn_confirm'])) {
         // Validate input before moving to confimation page.
         // Display errors if input inappropriate.
-        var_dump($sanitized);
         $input_errors = EntryController::validate($sanitized);
         if ( empty($input_errors) ) { // move to confirmation page
             $page_flag = 1;
