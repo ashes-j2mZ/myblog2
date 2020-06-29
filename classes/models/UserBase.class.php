@@ -10,6 +10,7 @@
     class UserBase
     {
 
+        private $user_id = null;
         private $login_id = null;
         private $user_passwd = null;
         private $token = null;
@@ -24,7 +25,8 @@
         */
         protected function setProperty(array $arrDao)
         {
-            $this->setLoginId($arrDao['login_id'])
+            $this->setUserId($arrDao['user_id'])
+            ->setLoginId($arrDao['login_id'])
             ->setDisplayName($arrDao['display_name'])
             ->setUserPasswd($arrDao['user_passwd'])
             ->setDelFlag($arrDao['del_flag']);
@@ -50,6 +52,11 @@
         }
 
         // setter functions
+        public function setUserId($user_id)
+        {
+            $this->user_id = $user_id;
+            return $this;
+        }
         public function setLoginId($login_id)
         {
             $this->login_id = $login_id;
@@ -77,6 +84,10 @@
         }
 
         // getter functions
+        public function getUserId()
+        {
+            return $this->user_id;
+        }
         public function getLoginId()
         {
             return $this->login_id;

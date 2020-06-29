@@ -26,6 +26,7 @@
         <!-- 最新エントリ10件を表示 -->
         <?php if ( LoginController::checkLogin() ) : ?>
             <p>Not <?php echo $username . "?" ?><br>Sign in to your account from <a href="login.php">here</a>.</p>
+            <a href="new_post.php"><button type="button" name="btn_submit">New blog post</button></a>
             <a href="logout.php"><button type="button" name="btn_logout">Sign out</button></a>
         <?php else : ?>
             <p>Please login or register from here.</p>

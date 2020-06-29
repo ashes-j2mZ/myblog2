@@ -1,5 +1,5 @@
 <?php
-    // last edited
+    // last edited 2020年6月29日 月曜日 13:47
 
     namespace classes\dao;
 
@@ -8,6 +8,7 @@
 
     /**
      * Blog entry DAO class
+     * @since 2020/06/26
      */
     class EntryDao
     {
@@ -21,9 +22,9 @@
         public static function getDao($entryId, $intDelFlag = null)
         {
             $sql = "SELECT ";
-            $sql .= "login_id";
-            $sql .= ", user_passwd";
-            $sql .= ", display_name";
+            $sql .= "entry_id";
+            $sql .= ", entry_title";
+            $sql .= ", entry_content";
             $sql .= ", del_flag ";
             $sql .= "FROM entries_table ";
             $sql .= "WHERE entry_id = :entry_id ";

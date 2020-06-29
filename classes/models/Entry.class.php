@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年6月26日 金曜日 16:59
+    // last edited 2020年6月29日 月曜日 10:42
 
     namespace classes\models;
 
@@ -7,6 +7,7 @@
 
     /**
      * blog entry model class
+     * @since 2020/06/26
      */
     final class Entry
     {
@@ -30,6 +31,17 @@
             ->setEntryContent($arrDao['entry_content'])
             ->setDelFlag($arrDao['del_flag']);
             return $this;
+        }
+
+        /**
+        * find entry by ID
+        * @param string $id
+        * @return classes\models\Entry
+        */
+        public function findEntry($id)
+        {
+            $dao = EntryDao::getDao($id);
+            return ( isset($dao[0]) ) ? $this->setProperty( reset($dao) ) : null;
         }
 
         /**

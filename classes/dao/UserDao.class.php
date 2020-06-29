@@ -20,7 +20,8 @@
         public static function getDao($intLoginId, $intDelFlag = null)
         {
             $sql = "SELECT ";
-            $sql .= "login_id";
+            $sql .= "user_id";
+            $sql .= ", login_id";
             $sql .= ", user_passwd";
             $sql .= ", display_name";
             $sql .= ", del_flag ";
