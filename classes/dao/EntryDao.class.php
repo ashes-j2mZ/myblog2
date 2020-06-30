@@ -26,7 +26,7 @@
             $sql .= ", entry_title";
             $sql .= ", entry_content";
             $sql .= ", del_flag ";
-            $sql .= "FROM entries_table ";
+            $sql .= "FROM entry ";
             $sql .= "WHERE entry_id = :entry_id ";
 
             $arr = array();
@@ -47,7 +47,7 @@
         public static function save(Entry $entry)
         {
             $sql = "UPDATE ";
-            $sql .= "entries_table ";
+            $sql .= "entry ";
             $sql .= "SET ";
             $sql .= "entry_title = :entry_title";
             $sql .= ", entry_content = :entry_content";
@@ -71,7 +71,7 @@
         public static function insert(Entry $entry)
         {
             $sql = "INSERT INTO ";
-            $sql .= "entries_table ";
+            $sql .= "entry ";
             $sql .= "(";
             $sql .= "user_id";
             $sql .= ", entry_id";
