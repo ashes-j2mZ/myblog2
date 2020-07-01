@@ -5,6 +5,7 @@
     // use classes\common\Database;
     // use classes\common\Search;
     use classes\controllers\LoginController;
+    use classes\controllers\EntryController;
     // use classes\models\Entry;
 
     $username = null;
@@ -13,15 +14,8 @@
         $username = LoginController::getLoginUser()->getDisplayName();
     }
 
-    // // set search parameters
-    // $order = array(
-    //     'order' => 'last_updated',
-    //     'direction' => 'DESC'
-    // );
-    // $limit = 10;
-    // // retrieve latest entries using search parameters
-    // Database::transaction();
-    // $latest = Search::find('entry', null, $order, $limit);
+    $latest = EntryController::showLatest();
+
 ?>
 
 <!DOCTYPE html>
@@ -33,8 +27,27 @@
     </head>
     <body>
         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
-        <p>Welcome to My Blog<?php echo !is_null($username) ? ', ' . $username : ''; ?>! Check out the latest entries by users.</p>
-        <!-- 最新エントリ10件を表示 -->
+        <p>Welcome to My Blog<?php echo !is_null($username) ? ', ' . $username : ''; ?>! Check out the latest entries by users here.</p>
+
+            <table border="1" align="center">
+                <tr>
+                    <caption>New entries</caption>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Last updated</th>
+                </tr>
+                <?php foreach ($latest as $value) {
+                    $author = $value['author'];
+                    $title = $value['entry']->entry_title;
+                    $date = substr($value['entry']->last_updated, 0, 10);
+                    echo "<tr>";
+                    echo "<td>" . $title . "</td>";
+                    echo "<td>" . $author . "</td>";
+                    echo "<td>" . $date . "</td>";
+                    echo "</tr>";
+                } ?>
+            </table>
+
         <?php if ( LoginController::checkLogin() ) : ?>
             <p>Not <?php echo $username . "?" ?><br>Sign in to your account from <a href="login.php">here</a>.</p>
             <a href="new_post.php"><button type="button" name="btn_submit">New blog post</button></a>

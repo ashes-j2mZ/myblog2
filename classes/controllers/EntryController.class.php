@@ -3,6 +3,7 @@
     namespace classes\controllers;
 
     use classes\common\Database;
+    use classes\common\Search;
     use classes\models\Entry;
     use classes\models\User;
 
@@ -45,6 +46,36 @@
         {
             $entry_array = EntryDao::getDao($entry_id)[0];
             return isset($entry_array) ? $entry_array : null;
+        }
+
+        public static function showLatest()
+        {
+            // set search parameters
+            $param = null;
+            $order = array(
+                'parameter' => 'last_updated',
+                'direction' => 'DESC'
+            );
+            $limit = 10;
+
+            // begin transaction
+            Database::transaction();
+            // retrieve information from entry table
+            $latest = Search::find('entry', $param, $order, $limit);
+            // commit transaction
+            Database::commit();
+            
+            // initialize array to contain retrieved entries
+            $entries = array();
+            foreach ($latest as $value) {
+                // create entry model using retrieved results
+                $entry = new Entry($value);
+                // retrieve entry author
+                $author = $entry->showAuthor();
+                // add to array
+                $entries[] = array('entry' => $entry, 'author' => $author);
+            }
+            return $entries;
         }
 
         /**
