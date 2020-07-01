@@ -34,16 +34,7 @@
             }
 
             // search database and retrieve results if any
-            $search = Database::select($sql, $arr);
-
-            // return result as array containing objects that match search
-            $results = array();
-            if ( isset($search) ) {
-                foreach ($search as $key => $value) {
-                    $results[$key] = new ObjModel($value);
-                }
-            }
-            return $results;
+            return Database::select($sql, $arr);
         }
 
     }

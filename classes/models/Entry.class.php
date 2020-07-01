@@ -9,7 +9,7 @@
      * blog entry model class
      * @since 2020/06/26
      */
-    final class Entry
+    final class Entry extends ObjModel
     {
 
         private $user_id = null;
