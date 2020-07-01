@@ -1,8 +1,10 @@
 <?php
-    // last edited 2020年6月29日 月曜日 10:42
+    // last edited 2020年7月1日 水曜日 12:51
 
     namespace classes\models;
 
+    use classes\common\Database;
+    use classes\common\Search;
     use classes\dao\EntryDao;
 
     /**
@@ -12,16 +14,41 @@
     final class Entry extends ObjModel
     {
 
-        private $user_id = null;
+        // private $user_id = null;
         private $entry_id = null;
         private $entry_title = null;
         private $entry_content = null;
         private $del_flag = null;
 
-        public function __construct($args, $pub = null)
+        private const DEFAULT = array(
+            'user_id' => '',
+            'entry_id' => '',
+            'entry_title' => '',
+            'entry_content' => '',
+            'del_flag' => 0
+        );
+
+        public function __construct($args = self::DEFAULT, $pub = null)
         {
             $pub = array( 'entry_id', 'entry_title', 'entry_content', 'del_flag' );
             parent::__construct($args, $pub);
+        }
+
+        /**
+        * retrieve name of this entry's author
+        * @return string
+        */
+        public function showAuthor()
+        {
+            // set search parameters
+            $param = array(
+                'type' => 'user_id',
+                'value' => $this->user_id
+            );
+            // retrieve user information associated with this entry
+            $user = Search::find('user', $param);
+            // set user's display name as this instance's property
+            return isset($user[0]) ? reset($user)['display_name'] : 'Could not find author associated with this entry.';
         }
 
         /**
