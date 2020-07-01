@@ -19,18 +19,16 @@
             $arr = array();
 
             // construct SQL query to retrieve object(s)
-            $sql = "SELECT * FROM " . $table_name . " ";
+            $sql = "SELECT * FROM " . $table_name;
             if ( !is_null($param) ) {
-                    $sql .= "WHERE " . $param['type'] . " = ? ";
+                    $sql .= " WHERE " . $param['type'] . " = ?";
                     $arr[] = $param["value"];
             }
             if ( !is_null($order) ) {
-                    $sql .= "ORDER BY " . $order["parameter"] . " ? ";
-                    $arr[] = $order["direction"];
+                    $sql .= " ORDER BY " . $order["parameter"] . "  " . $order["direction"];
             }
             if ( !is_null($limit) ) {
-                    $sql .= "LIMIT ? ";
-                    $arr[] = $limit;
+                    $sql .= " LIMIT " . $limit;
             }
 
             // search database and retrieve results if any
