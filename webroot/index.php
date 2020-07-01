@@ -2,7 +2,10 @@
 <?php
     require_once '../common.php';
 
+    // use classes\common\Database;
+    // use classes\common\Search;
     use classes\controllers\LoginController;
+    // use classes\models\Entry;
 
     $username = null;
 
@@ -10,7 +13,15 @@
         $username = LoginController::getLoginUser()->getDisplayName();
     }
 
-
+    // // set search parameters
+    // $order = array(
+    //     'order' => 'last_updated',
+    //     'direction' => 'DESC'
+    // );
+    // $limit = 10;
+    // // retrieve latest entries using search parameters
+    // Database::transaction();
+    // $latest = Search::find('entry', null, $order, $limit);
 ?>
 
 <!DOCTYPE html>
