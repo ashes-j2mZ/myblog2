@@ -18,6 +18,12 @@
         private $entry_content = null;
         private $del_flag = null;
 
+        public function __construct($args, $pub = null)
+        {
+            $pub = array( 'entry_id', 'entry_title', 'entry_content', 'del_flag' );
+            parent::__construct($args, $pub);
+        }
+
         /**
         * set instance properties
         * @param array $arrDao
