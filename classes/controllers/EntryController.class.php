@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月2日 木曜日 16:07
+    // last edited 2020年7月2日 木曜日 16:55
 
     namespace classes\controllers;
 
@@ -78,23 +78,18 @@
         }
 
         /**
-         * updates blog entry with entry ID
-         * @param string $entry_id
-         * @param array $data
+         * updates blog entry set in session
+         * @param array $edit_data
          * @return void
          */
-        public static function editEntry($entry_id, $data)
+        public static function updateEntry($edit_data)
         {
-            // begin transaction
-            Database::transaction();
-            // find entry to be edited
-            $entry = new Entry();
-            $entry = $entry->findEntry($entry_id);
-            if ( $entry !== null ) {
-                // update entry information
-                $entry->setEntryTitle($data['entry_title'])
-                         ->setEntryContent($data['entry_content']);
-                $entry->save();
+            if ( isset($_SESSION['entryToEdit']) && ($_SESSION['entryToEdit'] instanceof Entry) ) {
+                // remove button input
+                $stripped = Utility::removeButtonInput($edit_data);
+                // begin transaction
+                Database::transaction();
+                EntryDao::editEntry($stripped);
                 // commit transaction
                 Database::commit();
             }
