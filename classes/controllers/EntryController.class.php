@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月2日 木曜日 16:55
+    // last edited 2020年7月2日 木曜日 17:50
 
     namespace classes\controllers;
 
@@ -38,13 +38,25 @@
 
         /**
          * finds and displays blog entry with given entry ID
-         * @param string $entry_id
-         * @return void
+         * @return Entry $entry
          */
-        public static function showEntry($entry_id)
+        public static function viewEntry()
         {
-            $entry_array = EntryDao::getDao($entry_id)[0];
-            return isset($entry_array) ? $entry_array : null;
+            // check if entry ID has been submitted via GET
+            if ( isset($_GET['entry_id']) && is_string($_GET['entry_id']) ) {
+                // begin transaction
+                Database::transaction();
+                // check if entry exists
+                $entry = EntryDao::findEntry($_GET['entry_id']);
+                if ( !is_null($entry) ) {
+                    // commit transaction and return retrieved entry
+                    Database::commit();
+                    return $entry;
+                } else {
+                    // commit transaction
+                    Database::commit();
+                }
+            }
         }
 
         public static function showLatest()
