@@ -1,91 +1,54 @@
 <?php
-    // last edited 2020年6月22日 月曜日 12:01
+    // last edited 2020年7月2日 木曜日 13:43
+
     namespace classes\dao;
 
-    use classes\common\Database;
     use classes\models\User;
 
     /**
      * User DAO class
      */
-    class UserDao
+    class UserDao extends Dao
     {
 
+        private const TABLE_NAME = 'user';
+
         /**
-         * get array containing user information from login ID
-         * @param string $intLoginId
-         * @param int $intDelFlag = null
-         * @return array
+         * get user information from login ID or primary ID in user table
+         * @param string $login_id
+         * @return User $user
          */
-        public static function getDao($intLoginId, $intDelFlag = null)
+        public static function findUser($id)
         {
-            $sql = "SELECT ";
-            $sql .= "user_id";
-            $sql .= ", login_id";
-            $sql .= ", user_passwd";
-            $sql .= ", display_name";
-            $sql .= ", del_flag ";
-            $sql .= "FROM user ";
-            $sql .= "WHERE login_id = :loginId ";
+            $search = array(
+                'type' => 'login_id',
+                'value' => $id
+            );
 
-            $arr = array();
-            $arr[':loginId'] = $intLoginId;
-            if (!is_null($intDelFlag) && in_array($intDelFlag, array(0, 1))) {
-                $sql .= "AND del_flag = :delFlag ";
-                $arr[':delFlag'] = $intDelFlag;
-            }
-
-            return Database::select($sql, $arr);
+            $result = parent::find(self::TABLE_NAME, $search);
+            return isset($result[0]) ? new User( reset($result) ) : null;
         }
 
         /**
          * update user information
          * @param User $user
+         * @param array $edit_data
          * @return bool
          */
-        public static function save(User $user)
+        public static function editUserInfo(User $user, $edit_data)
         {
-            $sql = "UPDATE ";
-            $sql .= "'users_table' ";
-            $sql .= "SET ";
-            $sql .= "user_passwd = :password";
-            $sql .= ", display_name = :displayName";
-            $sql .= ", del_flag = :delFlag";
-            $sql .= "WHERE login_id = :loginId";
+            $limit = array('login_id' => $user->user_id);
 
-            $arr = array();
-            $arr[':loginId'] = $user->getLoginId();
-            $arr[':password'] = $user->getUserPasswd();
-            $arr[':displayName'] = $user->getDisplayName();
-            $arr[':delFlag'] = $user->getDelFlag();
-
-            return Database::update($sql, $arr);
+            return parent::update(self::TABLE_NAME, $edit_data, $limit);
         }
 
         /**
         * create new user information
         * @return int
         */
-        public static function insert(User $user)
+        public static function createUser(array $regist_data)
         {
-            $sql = "INSERT INTO ";
-            $sql .= "users_table ";
-            $sql .= "(";
-            $sql .= "login_id";
-            $sql .= ", user_passwd";
-            $sql .= ", display_name";
-            $sql .= ") VALUES (";
-            $sql .= ":login_id";
-            $sql .= ", :password";
-            $sql .= ", :displayName";
-            $sql .= ")";
-
-            $arr = array();
-            $arr[':login_id'] = $user->getLoginId();
-            $arr[':password'] = $user->getUserPasswd();
-            $arr[':displayName'] = $user->getDisplayName();
-
-            return Database::insert($sql, $arr);
+            return parent::create(self::TABLE_NAME, $regist_data);
         }
 
     }

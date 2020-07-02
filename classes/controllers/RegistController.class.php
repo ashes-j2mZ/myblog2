@@ -1,11 +1,11 @@
 <?php
-    // last edited
+    // last edited 2020年7月2日 木曜日 15:27
 
     namespace classes\controllers;
 
     use classes\common\Database;
     use classes\common\Utility;
-    use classes\models\User;
+    use classes\dao\UserDao;
 
     /**
      * User registration controller class.
@@ -19,20 +19,20 @@
          * @param array $data
          * @return void
          */
-        public static function registration($data)
+        public static function registration($regist_data)
         {
-            // create user model for registration
-            $user = new User();
-            $user->setLoginId($data['login_id'])
-                    ->setUserPasswd( password_hash($data['user_passwd'], PASSWORD_BCRYPT) )
-                    ->setDisplayName($data['display_name']);
+            // encrypt password provided in registration data
+            $regist_data['user_passwd'] = password_hash($regist_data['user_passwd'], PASSWORD_BCRYPT);
+            // remove button input
+            $stripped = Utility::removeButtonInput($regist_data);
+
             // begin transaction
             Database::transaction();
             // insert data into users table
-            $user->create();
+            UserDao::createUser($stripped);
             Database::commit();
         }
-        
+
         /**
          * validates user input from form and displays any errors
          * @param array $data
@@ -48,8 +48,7 @@
             } elseif ( mb_strlen($data['login_id']) < 6 || mb_strlen($data['login_id']) > 16 ) { // invalid length
                 $errors[] = "Your login ID must be between 6 and 16 characters long.";
             }  else { // ID already exists
-                $user = new User();
-                if ($user->findUser($data['login_id']) !== null) {
+                if (UserDao::findUser($data['login_id']) !== null) {
                     $errors[] = "A user with this login ID already exists.";
                 }
             }
@@ -80,7 +79,7 @@
 
         /**
          * masks part of password in confirmation screen
-         * @param string $password
+         * @param type $password
          * @return string $masked
          */
          public static function maskPassword($password)

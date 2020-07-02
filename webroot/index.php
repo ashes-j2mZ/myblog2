@@ -11,7 +11,7 @@
     $username = null;
 
     if ( LoginController::checkLogin() ) {
-        $username = LoginController::getLoginUser()->getDisplayName();
+        $username = LoginController::getLoginUser()->display_name;
     }
 
     $latest = EntryController::showLatest();

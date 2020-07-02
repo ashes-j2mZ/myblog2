@@ -1,11 +1,12 @@
 <?php
-    // last edited 2020年6月29日 月曜日 13:47
+    // last edited 2020年7月2日 木曜日 16:07
+
     namespace classes\controllers;
 
     use classes\common\Database;
-    use classes\common\Search;
+    use classes\common\Utility;
+    use classes\dao\EntryDao;
     use classes\models\Entry;
-    use classes\models\User;
 
     /**
      * controller for adding blog entries
@@ -19,20 +20,18 @@
          * @param array $data
          * @return void
          */
-        public static function postEntry($data)
+        public static function postEntry($entry_data)
         {
-            // create new entry model for posting
-            $entry = new Entry();
             // retrieve user information from session
             $loginUser = $_SESSION['loginUserModel'];
-            $entry->setUserId($loginUser->getUserId())
-                     ->setEntryId( $loginUser->getLoginId() . '-' . date('ymd-Hi') )
-                     ->setEntryTitle($data['entry_title'])
-                     ->setEntryContent($data['entry_content']);
+            // add user information to input data
+            $entry_data['user_id'] = $loginUser->user_id;
+            $entry_data['entry_id'] = $loginUser->login_id . '-' . date('ymd-Hi');
+            $stripped = Utility::removeButtonInput($entry_data);
             // begin transaction
             Database::transaction();
             // insert data into entry table
-            $entry->create();
+            EntryDao::createEntry($stripped);
             // commit transaction
             Database::commit();
         }
@@ -61,10 +60,10 @@
             // begin transaction
             Database::transaction();
             // retrieve information from entry table
-            $latest = Search::find('entry', $param, $order, $limit);
+            $latest = EntryDao::find('entry', $param, $order, $limit);
             // commit transaction
             Database::commit();
-            
+
             // initialize array to contain retrieved entries
             $entries = array();
             foreach ($latest as $value) {

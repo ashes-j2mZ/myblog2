@@ -1,9 +1,10 @@
 <?php
-    // last edited 2020年6月22日 月曜日 12:01
+    // last edited 2020年7月2日 木曜日 15:27
     namespace classes\common;
 
     /**
     * class for using database from application
+    * @since 2020/06/24
     */
     class Database
     {
@@ -106,10 +107,10 @@
         * @param array $arr
         * @return array
         */
-        public static function select($sql, array $arr = array())
+        public static function select( $sql, array $arr = array() )
         {
             $stmt = self::getInstance()->prepare($sql);
-            $stmt->execute($arr);
+            empty($arr) ? $stmt->execute() : $stmt->execute($arr);
             return $stmt->fetchAll();
         }
 
@@ -119,13 +120,13 @@
         * @param array $arr
         * @return int
         */
-        public static function insert($sql, array $arr)
+        public static function insert( $sql, array $arr = array() )
         {
             if( !self::getInstance()->inTransaction() ) {
                 throw new \Exception("Not in transaction");
             }
             $stmt = self::getInstance()->prepare($sql);
-            $stmt->execute($arr);
+            empty($arr) ? $stmt->execute() : $stmt->execute($arr);
             return self::getInstance()->lastInsertID();
         }
 
@@ -135,13 +136,13 @@
         * @param array $arr
         * @return bool
         */
-        public static function update($sql, array $arr)
+        public static function update( $sql, array $arr = array() )
         {
             if( !self::getInstance()->inTransaction() ) {
                 throw new \Exception("Not in transaction");
             }
             $stmt = self::getInstance()->prepare($sql);
-            return $stmt->execute($arr);
+            return empty($arr) ? $stmt->execute() : $stmt->execute($arr);
         }
 
         /**
@@ -150,13 +151,13 @@
         * @param array $arr
         * @return bool
         */
-        public static function delete($sql, array $arr)
+        public static function delete( $sql, array $arr = array() )
         {
             if( !self::getInstance()->inTransaction() ) {
                 throw new \Exception("Not in transaction");
             }
             $stmt = self::getInstance()->prepare($sql);
-            return $stmt->execute($arr);
+            return empty($arr) ? $stmt->execute() : $stmt->execute($arr);
         }
 
         public static function checkTransaction()
