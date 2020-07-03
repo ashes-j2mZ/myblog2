@@ -1,15 +1,13 @@
-<!-- last edited 2020年7月2日 木曜日 17:50 -->
+<!-- last edited 2020年7月3日 金曜日 10:46 -->
 <?php
     require_once '../common.php';
 
     use classes\controllers\EntryController;
     use classes\controllers\LoginController;
-    use classes\dao\EntryDao;
-    use classes\models\Entry;
 
     // retrieve entry to view
     // $entry = EntryController::viewEntry();
-    $entry = EntryDao::findEntry('john.doe-200629-1441');
+    $entry = EntryController::viewEntry();
     if ( is_null($entry) ) {
         // redirect to top page
         header('Location: ' . BLOG_TOP);
@@ -34,7 +32,7 @@
             <p><?php echo 'by ' . $author . ' on ' . $date; ?></p>
         </div>
         <div class="element_wrap">
-            <p><?php echo $entry->entry_content; ?></p>
+            <p><?php echo nl2br($entry->entry_content); ?></p>
         </div>
         <?php if ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->user_id == $entry->user_id) ) : ?>
             <div class="element_wrap">

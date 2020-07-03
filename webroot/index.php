@@ -1,4 +1,4 @@
-<!-- last edited 2020年6月22日 月曜日 12:01 -->
+<!-- last edited 2020年7月3日 金曜日 10:46 -->
 <?php
     require_once '../common.php';
 
@@ -36,16 +36,17 @@
                     <th>Author</th>
                     <th>Last updated</th>
                 </tr>
-                <?php foreach ($latest as $value) {
-                    $author = $value['author'];
-                    $title = $value['entry']->entry_title;
-                    $date = substr($value['entry']->last_updated, 0, 10);
-                    echo "<tr>";
-                    echo "<td>" . $title . "</td>";
-                    echo "<td>" . $author . "</td>";
-                    echo "<td>" . $date . "</td>";
-                    echo "</tr>";
-                } ?>
+                    <?php foreach ($latest as $value) {
+                        $author = $value['author'];
+                        $id = $value['entry']->entry_id;
+                        $title = $value['entry']->entry_title;
+                        $date = substr($value['entry']->last_updated, 0, 10);
+                        echo '<tr>';
+                        echo '<td><a href="entry.php?entry_id=' . $id . '">' . $title . '</a></td>';
+                        echo '<td>' . $author . '</td>';
+                        echo '<td>' . $date . '</td>';
+                        echo '</tr>';
+                    } ?>
             </table>
 
         <?php if ( LoginController::checkLogin() ) : ?>
