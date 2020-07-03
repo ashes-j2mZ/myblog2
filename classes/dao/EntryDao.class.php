@@ -53,6 +53,15 @@
             return parent::create(self::TABLE_NAME, $entry_data);
         }
 
+        /**
+        * remove flagged blog entry from database
+        * @return bool
+        */
+        public static function deleteEntry()
+        {
+            return parent::delete(self::TABLE_NAME);
+        }
+
     }
 
  ?>

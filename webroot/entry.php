@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月3日 金曜日 10:46 -->
+<!-- last edited 2020年7月3日 金曜日 16:58 -->
 <?php
     require_once '../common.php';
 
@@ -35,9 +35,19 @@
             <p><?php echo nl2br($entry->entry_content); ?></p>
         </div>
         <?php if ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->user_id == $entry->user_id) ) : ?>
-            <div class="element_wrap">
-                <p>Edit or remove your post from here.</p>
-            </div>
+            <p>Edit or remove your post from here.</p><br>
+            <form action="edit_post.php" method="get">
+                <div class="element_wrap">
+                    <button type="submit" value="btn_edit">Edit post</button>
+                    <input type="hidden" name="entry_id" value="<?php echo $entry->entry_id; ?>">
+                </div>
+            </form>
+            <form action="delete_post.php" method="get">
+                <div class="element_wrap">
+                    <button type="submit" value="btn_delete">Remove post</button>
+                    <input type="hidden" name="entry_id" value="<?php echo $entry->entry_id; ?>">
+                </div>
+            </form>
         <?php endif ?>
     </body>
 </html>

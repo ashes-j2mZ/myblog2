@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年6月24日 水曜日 10:31
+    // last edited 2020年7月3日 金曜日 16:45
 
     /**
     * development mode
@@ -25,5 +25,10 @@
     * path to top page for redirection
     */
     define('BLOG_TOP', REDIRECT_PATH . '/index.php');
+
+    /**
+    * path to entry page for redirection
+    */
+    define('BLOG_ENTRY', REDIRECT_PATH . '/entry.php?entry_id=');
 
  ?>

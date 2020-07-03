@@ -6,8 +6,12 @@
     use classes\controllers\EntryController;
     use classes\controllers\LoginController;
 
-    // redirect to top page if not logged in
-    if ( !LoginController::checkLogin() ) {
+
+    // session_regenerate_id(true);
+    $_SESSION['targetEntry'] = EntryController::viewEntry();
+
+    // redirect to top page if not logged in or if entry doesn't belong to user currently logged in
+    if ( !LoginController::checkLogin() || (LoginController::getLoginUser()->user_id !== $_SESSION['targetEntry']->user_id) ) {
         header('Location: ' . BLOG_TOP);
     }
 
@@ -33,30 +37,30 @@
     } elseif (!empty($_POST['btn_submit'])) { // move to completion page
         if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
             // add information to database
-            EntryController::postEntry($sanitized);
+            EntryController::updateEntry($sanitized);
             // move to completion page and unset input variables
             $page_flag = 2;
             unset($_POST);
             unset($sanitized);
             unset($input_errors);
+            unset( $_SESSION['targetEntry'] );
         }
     } else {
         $page_flag = 0;
     }
-
- ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="forms/form.css">
-        <title>My Blog: New blog entry</title>
+        <title>My Blog: Edit entry</title>
     </head>
     <body>
         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
         <?php if ($page_flag === 1): ?>
-            <h2>Post the following as a new blog entry. Continue?</h2>
+            <h2>Update your entry as the following. Continue?</h2>
             <div class="element_wrap">
                 <label for="entry_title">Title</label>
                 <p><?php echo $sanitized['entry_title']; ?></p>
@@ -68,16 +72,16 @@
 
             <form action="" method="post">
                 <input type="submit" name="btn_back" value="Return to edit entry">
-                <input type="submit" name="btn_submit" value="Post entry to My Blog">
+                <input type="submit" name="btn_submit" value="Update entry">
                 <!-- 受け渡し用 -->
                 <input type="hidden" name="entry_title" value="<?php echo $sanitized['entry_title']; ?>">
                 <input type="hidden" name="entry_content" value="<?php echo $sanitized['entry_content']; ?>">
             </form>
 
         <?php elseif ($page_flag === 2): ?>
-            <h2>Entry successfully posted to My Blog.<br>Return to top page.</h2>
+            <h2>Entry successfully updated.<br>Return to top page or your user page.</h2>
             <a href="<?php echo BLOG_TOP; ?>"><button type="button" name="btn_top">My Blog Top</button></a>
-
+            <a href="<?php echo 'user.php?user_id=' . LoginController::getLoginUser()->user_id; ?>"><button type="button" name="btn_top">Your user page</button></a>
         <?php else: ?>
             <!-- Display input errors as list -->
             <?php if (!empty($input_errors)) : ?>
@@ -88,15 +92,15 @@
                 </ul>
             <?php endif ?>
 
-            <h2>Write your blog entry here.</h2>
+            <h2>Edit your blog entry from here.</h2>
             <form action="" method="post">
                 <div class="element_wrap">
                     <label for="entry_title">Title</label>
-                    <input type="text" name="entry_title" maxlength="50" placeholder="Enter a title for your new blog post..." value="<?php echo !empty($sanitized['entry_title']) ?  $sanitized['entry_title'] : ''; ?>">
+                    <input type="text" name="entry_title" maxlength="50" placeholder="Enter a title for your new blog post..." value="<?php echo !empty($sanitized['entry_title']) ?  $sanitized['entry_title'] : $_SESSION['targetEntry']->entry_title; ?>">
                 </div>
                 <div class="element_wrap">
                     <label for="entry_content">Post</label>
-                    <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo !empty($sanitized['entry_content']) ?  $sanitized['entry_content'] : ''; ?></textarea>
+                    <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo !empty($sanitized['entry_content']) ?  $sanitized['entry_content'] : $_SESSION['targetEntry']->entry_content; ?></textarea>
                 </div>
                 <input type="submit" name="btn_confirm" value="Check post">
             </form>

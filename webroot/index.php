@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月3日 金曜日 10:46 -->
+<!-- last edited 2020年7月3日 金曜日 17:01 -->
 <?php
     require_once '../common.php';
 
@@ -49,7 +49,7 @@
 
         <div class="element_wrap">
             <?php if ( LoginController::checkLogin() ) : ?>
-                <p>Not <?php echo $username . "?" ?><br>Sign in to your account from <a href="login.php">here</a>.</p>
+                <p>Not <?php echo explode(' ', $username)[0] . "?" ?><br>Sign in to your account from <a href="login.php">here</a>.</p><br>
                 <a href="new_post.php"><button type="button" name="btn_submit">New blog post</button></a>
                 <a href="logout.php"><button type="button" name="btn_logout">Sign out</button></a>
             <?php else : ?>

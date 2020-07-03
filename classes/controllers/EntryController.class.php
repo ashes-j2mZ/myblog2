@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月2日 木曜日 17:50
+    // last edited 2020年7月3日 金曜日 16:02
 
     namespace classes\controllers;
 
@@ -9,7 +9,7 @@
     use classes\models\Entry;
 
     /**
-     * controller for adding blog entries
+     * controller for adding and manipulating blog entries
      * @since 2020/06/26
      */
     class EntryController
@@ -100,16 +100,34 @@
          */
         public static function updateEntry($edit_data)
         {
-            if ( isset($_SESSION['entryToEdit']) && ($_SESSION['entryToEdit'] instanceof Entry) ) {
+            if ( isset($_SESSION['targetEntry']) && ($_SESSION['targetEntry'] instanceof Entry) ) {
                 // remove button input
                 $stripped = Utility::removeButtonInput($edit_data);
                 // begin transaction
                 Database::transaction();
-                EntryDao::editEntry($stripped);
+                EntryDao::editEntry($_SESSION['targetEntry'], $stripped);
                 // commit transaction
                 Database::commit();
             }
 
+        }
+
+        /**
+        * removes blog entry set in session from database
+        * @return void
+        */
+        public static function removeEntry()
+        {
+            // initialize variables needed for removal
+            $delete = array('del_flag' => 1);
+            // begin transaction
+            Database::transaction();
+            // flag entry for removal
+            EntryDao::editEntry($_SESSION['targetEntry'], $delete);
+            // remove entry from database
+            EntryDao::deleteEntry();
+            // commit transaction
+            Database::commit();
         }
 
         /**
