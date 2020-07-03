@@ -8,7 +8,7 @@
     /**
      * User DAO class
      */
-    class UserDao extends Dao
+    final class UserDao extends Dao
     {
 
         private const TABLE_NAME = 'user';
@@ -50,9 +50,10 @@
         }
 
         /**
-        * create new user information
-        * @return int
-        */
+         * create new user information
+         * @param array $regist_data
+         * @return int
+         */
         public static function createUser(array $regist_data)
         {
             return parent::create(self::TABLE_NAME, $regist_data);

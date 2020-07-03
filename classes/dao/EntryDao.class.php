@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年6月29日 月曜日 13:47
+    // last edited 2020年7月3日 金曜日 13:34
 
     namespace classes\dao;
 
@@ -9,16 +9,15 @@
      * Blog entry DAO class
      * @since 2020/06/26
      */
-    class EntryDao extends Dao
+    final class EntryDao extends Dao
     {
 
         private const TABLE_NAME = 'entry';
 
         /**
          * get array containing entry information from entry ID
-         * @param string $entryId
-         * @param int $intDelFlag = null
-         * @return array
+         * @param string $entry_id
+         * @return Entry
          */
         public static function findEntry($entry_id)
         {
@@ -34,9 +33,10 @@
         /**
          * update blog entry
          * @param Entry $entry
+         * @param array $edit_data
          * @return bool
          */
-        public static function editEntry(Entry $entry, $edit_data)
+        public static function editEntry(Entry $entry, array $edit_data)
         {
             $limit = array('entry_id' => $entry->entry_id);
 
@@ -44,10 +44,10 @@
         }
 
         /**
-        * create new blog entry
+         * create new blog entry
          * @param Entry $entry
-        * @return int
-        */
+         * @return int
+         */
         public static function createEntry(array $entry_data)
         {
             return parent::create(self::TABLE_NAME, $entry_data);
