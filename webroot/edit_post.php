@@ -19,14 +19,21 @@
     $sanitized = array();
     $input_errors = array();
     $page_flag = 0;
+    $save_flag = 0;
 
     // sanitize input
     if (!empty($_POST)) {
         $sanitized = Utility::sanitize($_POST);
     }
 
+    // save current input as draft when save button entered
+    if ( !empty($_POST['btn_save']) ) {
+        $save_flag = 1;
+        EntryController::saveDraft($sanitized);
+    }
+
     // Switch between registration, confirmation and completion pages using page flag.
-    if (!empty($_POST['btn_confirm'])) {
+    if ( !empty($_POST['btn_confirm']) ) {
         // Validate input before moving to confimation page.
         // Display errors if input inappropriate.
         $input_errors = EntryController::validate($sanitized);
@@ -34,7 +41,7 @@
             $page_flag = 1;
             $_SESSION['page'] = true;
         }
-    } elseif (!empty($_POST['btn_submit'])) { // move to completion page
+    } elseif ( !empty($_POST['btn_submit']) ) { // move to completion page
         if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
             // add information to database
             EntryController::updateEntry($sanitized);
@@ -93,6 +100,11 @@
             <?php endif ?>
 
             <h2>Edit your blog entry from here.</h2>
+            <?php if ($save_flag == 1) {
+                echo "<p>Progress successfully saved as draft.</p>";
+                echo "<p>Saved on " . date('F jS, Y') . " at " . date('H:i') . ".</p>";
+                $save_flag = 0;
+            } ?>
             <form action="" method="post">
                 <div class="element_wrap">
                     <label for="entry_title">Title</label>
@@ -102,6 +114,7 @@
                     <label for="entry_content">Post</label>
                     <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo !empty($sanitized['entry_content']) ?  $sanitized['entry_content'] : $_SESSION['targetEntry']->entry_content; ?></textarea>
                 </div>
+                <input type="submit" name="btn_save" value="Save as draft">
                 <input type="submit" name="btn_confirm" value="Check post">
             </form>
         <?php endif ?>
