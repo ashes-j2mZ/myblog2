@@ -59,10 +59,14 @@
             }
         }
 
-        public static function showLatest()
+        public static function showLatest($user_id = null)
         {
             // set search parameters
-            $param = null;
+            $param = is_null($user_id) ? null :
+            array(
+                'type' => 'user_id',
+                'value' => $user_id
+            );
             $order = array(
                 'parameter' => 'last_updated',
                 'direction' => 'DESC'

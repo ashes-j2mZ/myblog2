@@ -20,10 +20,17 @@
          */
         public static function findUser($id)
         {
-            $search = array(
-                'type' => 'login_id',
-                'value' => $id
-            );
+            if ( is_int($id) ) {
+                $search = array(
+                    'type' => 'user_id',
+                    'value' => $id
+                );
+            } else {
+                $search = array(
+                    'type' => 'login_id',
+                    'value' => $id
+                );
+            }
 
             $result = parent::find(self::TABLE_NAME, $search);
             return isset($result[0]) ? new User( reset($result) ) : null;
