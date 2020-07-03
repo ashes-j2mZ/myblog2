@@ -2,11 +2,8 @@
 <?php
     require_once '../common.php';
 
-    // use classes\common\Database;
-    // use classes\common\Search;
     use classes\controllers\LoginController;
     use classes\controllers\EntryController;
-    // use classes\models\Entry;
 
     $username = null;
 
