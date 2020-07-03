@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS draft (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  entry_id INT,
+  entry_title VARCHAR(50),
+  entry_content VARCHAR(5000),
+  update_flag TINYINT DEFAULT 0,
+  del_flag TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
