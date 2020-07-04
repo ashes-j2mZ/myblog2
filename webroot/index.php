@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月3日 金曜日 17:01 -->
+<!-- last edited 2020年7月4日 土曜日 17:41 -->
 <?php
     require_once '../common.php';
 
@@ -34,14 +34,14 @@
                 <th>Last updated</th>
             </tr>
                 <?php foreach ($latest as $value) {
-                    $author = $value['author'];
-                    $entry = $value['entry']->entry_id;
-                    $user = $value['entry']->user_id;
+                    $entry_id = $value['entry']->entry_id;
                     $title = $value['entry']->entry_title;
+                    $user_id = $value['author']->showPrimaryKey();
+                    $author = $value['author']->display_name;
                     $date = substr($value['entry']->last_updated, 0, 10);
                     echo '<tr>';
-                    echo '<td><a href="entry.php?entry_id=' . $entry . '">' . $title . '</a></td>';
-                    echo '<td><a href="user.php?user_id=' . $user . '">' . $author . '</a></td>';
+                    echo '<td><a href="entry.php?entry_id=' . $entry_id . '">' . $title . '</a></td>';
+                    echo '<td><a href="user.php?id=' . $user_id . '">' . $author . '</a></td>';
                     echo '<td>' . $date . '</td>';
                     echo '</tr>';
                 } ?>

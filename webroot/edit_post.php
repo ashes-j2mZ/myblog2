@@ -9,9 +9,10 @@
 
     // session_regenerate_id(true);
     $_SESSION['targetEntry'] = EntryController::viewEntry();
+    $login_user_id = LoginController::getLoginUser()->showPrimaryKey();
 
     // redirect to top page if not logged in or if entry doesn't belong to user currently logged in
-    if ( !LoginController::checkLogin() || (LoginController::getLoginUser()->user_id !== $_SESSION['targetEntry']->user_id) ) {
+    if ( !LoginController::checkLogin() || ($login_user_id !== (int)$_SESSION['targetEntry']->user_id) ) {
         header('Location: ' . BLOG_TOP);
     }
 
@@ -88,7 +89,7 @@
         <?php elseif ($page_flag === 2): ?>
             <h2>Entry successfully updated.<br>Return to top page or your user page.</h2>
             <a href="<?php echo BLOG_TOP; ?>"><button type="button" name="btn_top">My Blog Top</button></a>
-            <a href="<?php echo 'user.php?user_id=' . LoginController::getLoginUser()->user_id; ?>"><button type="button" name="btn_top">Your user page</button></a>
+            <a href="<?php echo 'user.php?id=' . LoginController::getLoginUser()->showPrimaryKey(); ?>"><button type="button" name="btn_top">Your user page</button></a>
         <?php else: ?>
             <!-- Display input errors as list -->
             <?php if (!empty($input_errors)) : ?>

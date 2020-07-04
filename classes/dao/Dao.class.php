@@ -1,5 +1,5 @@
 <?php
-// last edited 2020年7月2日 木曜日 10:56
+// last edited 2020年7月4日 土曜日 17:41
 
     namespace classes\dao;
 
@@ -12,6 +12,8 @@
      */
     class Dao
     {
+
+        protected const PRIMARY_KEY = 'id';
 
         /**
          * select all records from given table using given clauses
@@ -42,6 +44,27 @@
 
             // search database and retrieve results if any
             return Database::select($sql, $arr);
+        }
+
+        /**
+         * returns value for given key for record in given table
+         * @param string $key_name
+         * @param string $table_name
+         * @param array param
+         * @return int
+         */
+        protected static function getKey($key_name, $table_name, $param)
+        {
+            // initialize variables
+            $sql = "";
+            $arr = array();
+
+            // construct SQL query to retrieve information
+            $sql = "SELECT " . $key_name . " FROM " . $table_name;
+            $sql .= " WHERE " . $param['type'] . " = ?";
+            $arr[] = $param['value'];
+            $result = Database::select($sql, $arr);
+            return isset($result[0]) ? reset($result) : null;
         }
 
         /**

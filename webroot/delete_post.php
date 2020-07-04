@@ -6,9 +6,10 @@
     use classes\controllers\LoginController;
 
     $_SESSION['targetEntry'] = EntryController::viewEntry();
+    $login_user_id = LoginController::getLoginUser()->showPrimaryKey();
 
     // redirect to top page if not logged in or if entry doesn't belong to user currently logged in
-    if ( !LoginController::checkLogin() || (LoginController::getLoginUser()->user_id !== $_SESSION['targetEntry']->user_id) ) {
+    if ( !LoginController::checkLogin() || ($login_user_id !== (int)$_SESSION['targetEntry']->user_id) ) {
         header('Location: ' . BLOG_TOP);
     }
 

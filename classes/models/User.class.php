@@ -11,18 +11,14 @@
     {
 
         private const DEFAULT = array(
-            'user_id' => '',
             'login_id' => '',
-            'user_passwd' => '',
             'display_name' => '',
-            'register_date' => '',
-            'del_flag' => 0
+            'register_date' => ''
         );
 
-        public function __construct($args = self::DEFAULT, $pub = null)
+        public function __construct($args = self::DEFAULT)
         {
-            $pub = array( 'login_id', 'user_passwd', 'register_date', 'del_flag' );
-            parent::__construct($args, $pub);
+            parent::__construct($args);
         }
 
         /**
@@ -32,8 +28,26 @@
         */
         public function checkPassword($password)
         {
-            $hash = $this->user_passwd;
+            $hash = $this->showPassword();
             return password_verify($password, $hash);
+        }
+
+        /**
+        * retrieve primary key of this user
+        * @return int
+        */
+        public function showPrimaryKey()
+        {
+            return UserDao::getPrimaryKey($this);
+        }
+
+        /**
+        * retrieve this user's password
+        * @return int
+        */
+        private function showPassword()
+        {
+            return UserDao::getPassword($this);
         }
 
     }

@@ -6,10 +6,11 @@
     use classes\controllers\LoginController;
     use classes\dao\UserDao;
 
-    $user = UserDao::findUser( filter_input(INPUT_GET, 'user_id', FILTER_VALIDATE_INT) );
+    $user = UserDao::findUser( filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) );
+    $user_id = $user->showPrimaryKey();
     $display_name = $user->display_name;
-    $latest = EntryController::showLatest($user->user_id);
-    $is_login_user = ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->user_id == $user->user_id ) );
+    $latest = EntryController::showLatest($user_id);
+    $is_login_user = ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->showPrimaryKey() == $user_id ) );
 ?>
 
 <!DOCTYPE html>

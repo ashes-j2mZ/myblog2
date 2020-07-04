@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月3日 金曜日 16:58 -->
+<!-- last edited 2020年7月4日 土曜日 17:41 -->
 <?php
     require_once '../common.php';
 

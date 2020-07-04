@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月2日 木曜日 13:43
+    // last edited 2020年7月4日 土曜日 17:41
 
     namespace classes\dao;
 
@@ -22,7 +22,7 @@
         {
             if ( is_int($id) ) {
                 $search = array(
-                    'type' => 'user_id',
+                    'type' => parent::PRIMARY_KEY,
                     'value' => $id
                 );
             } else {
@@ -57,6 +57,36 @@
         public static function createUser(array $regist_data)
         {
             return parent::create(self::TABLE_NAME, $regist_data);
+        }
+
+        /**
+         * find primary key associated with given user
+         * @param User $user
+         * @return int
+         */
+        public static function getPrimaryKey(User $user)
+        {
+            $search = array(
+                'type' => 'login_id',
+                'value' => $user->login_id
+            );
+            $result = parent::getKey(parent::PRIMARY_KEY, self::TABLE_NAME, $search);
+            return (int)reset($result);
+        }
+
+        /**
+        * find password associated with given user
+        * @param User $user
+        * @return string
+        */
+        public static function getPassword(User $user)
+        {
+            $search = array(
+                'type' => 'login_id',
+                'value' => $user->login_id
+            );
+            $result = parent::getKey('user_passwd', self::TABLE_NAME, $search);
+            return reset($result);
         }
 
     }

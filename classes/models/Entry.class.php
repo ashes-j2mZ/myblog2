@@ -1,8 +1,9 @@
 <?php
-    // last edited 2020年7月2日 木曜日 16:06
+    // last edited 2020年7月4日 土曜日 17:41
 
     namespace classes\models;
 
+    use classes\dao\EntryDao;
     use classes\dao\UserDao;
 
     /**
@@ -17,18 +18,16 @@
             'entry_id' => '',
             'entry_title' => '',
             'entry_content' => '',
-            'del_flag' => 0
         );
 
-        public function __construct($args = self::DEFAULT, $pub = null)
+        public function __construct($args = self::DEFAULT)
         {
-            $pub = array( 'entry_id', 'entry_title', 'entry_content', 'del_flag' );
-            parent::__construct($args, $pub);
+            parent::__construct($args);
         }
 
         /**
-        * retrieve name of this entry's author
-        * @return string
+        * retrieve this entry's author
+        * @return User
         */
         public function showAuthor()
         {
@@ -36,7 +35,16 @@
             // retrieve user information associated with this entry
             $user = UserDao::findUser($login_id);
             // show user's display name
-            return is_null($user) ? 'Unknown author' : $user->display_name;
+            return is_null($user) ? 'Unknown author' : $user;
+        }
+
+        /**
+        * retrieve primary key of this entry's author
+        * @return int
+        */
+        public function showPrimaryKey()
+        {
+            return EntryDao::getPrimaryKey($this);
         }
 
     }

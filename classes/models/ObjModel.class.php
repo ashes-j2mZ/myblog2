@@ -11,32 +11,16 @@
 
         // array containing object properties
         private $properties = array();
-        // array containing names of parameters to be available to users
-        private $pub = array();
 
         /**
          * initializes object with parameters given in argument
          * @param array $args
          */
-        public function __construct($args, $pub = array())
+        public function __construct($args = array())
         {
             foreach ($args as $key => $value) {
                 $this->properties[$key] = $value;
             }
-            $this->pub = $pub;
-        }
-
-        /**
-        * gets array containing externally available parameters
-        * @return array
-        */
-        public function publicParams()
-        {
-            $arr = array();
-            foreach ($this->pub as $value) {
-                $arr[$value] = $this->properties[$value];
-            }
-            return $arr;
         }
 
         /**
@@ -46,8 +30,7 @@
         public function __toString()
         {
             $string = '';
-            $arr = $this->publicParams();
-            foreach ($arr as $key => $value) {
+            foreach ($this->properties as $key => $value) {
                 $string .= $key . ": " . $value . "\r\n";
             }
             return $string;

@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月3日 金曜日 16:02
+    // last edited 2020年7月4日 土曜日 17:41
 
     namespace classes\controllers;
 
@@ -27,7 +27,7 @@
             // retrieve user information from session
             $login_user = $_SESSION['loginUserModel'];
             // add user information to input data
-            $entry_data['user_id'] = $login_user->user_id;
+            $entry_data['user_id'] = $login_user->showPrimaryKey();
             $entry_data['entry_id'] = $login_user->login_id . '-' . date('ymd-Hi');
             $stripped = Utility::removeButtonInput($entry_data);
             // begin transaction
@@ -175,7 +175,7 @@
                 Database::commit();
             } else {
                 // add user ID from session into input data array
-                $stripped['user_id'] = $_SESSION['loginUserModel']->user_id;
+                $stripped['user_id'] = $_SESSION['loginUserModel']->showPrimaryKey();
                 // if draft based on edits to an existing entry, then add its ID to input data array
                 if ( isset( $_SESSION['targetEntry']) ) {
                     $stripped['entry_id'] = $_SESSION['targetEntry']->entry_id;

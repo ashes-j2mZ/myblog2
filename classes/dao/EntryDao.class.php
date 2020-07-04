@@ -15,7 +15,7 @@
         private const TABLE_NAME = 'entry';
 
         /**
-         * get array containing entry information from entry ID
+         * get entry model from entry ID
          * @param string $entry_id
          * @return Entry
          */
@@ -60,6 +60,21 @@
         public static function deleteEntry()
         {
             return parent::delete(self::TABLE_NAME);
+        }
+
+        /**
+         * find primary key associated with given entry
+         * @param Entry $entry
+         * @return int
+         */
+        public static function getPrimaryKey(Entry $entry)
+        {
+            $search = array(
+                'type' => 'entry_id',
+                'value' => $entry->entry_id
+            );
+            $result = parent::getKey(parent::PRIMARY_KEY, self::TABLE_NAME, $search);
+            return (int)reset($result);
         }
 
     }

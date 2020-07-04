@@ -36,18 +36,18 @@
                     // begin transaction
                     Database::transaction();
                     // find user by login ID
-                    $loginUser = UserDao::findUser($login_id);
-                    if( is_null($loginUser) )  {
+                    $login_user = UserDao::findUser($login_id);
+                    if( is_null($login_user) )  {
                         $msg = nl2br("A user with this login ID does not exist.\n" . 'Try again or register from <a href="registration.php">here</a>.');
                     } else {
                         // check whether password matches
-                        if ( $loginUser->checkPassword($password) ) {
+                        if ( $login_user->checkPassword($password) ) {
                             // commit transaction
                             Database::commit();
                             // prevent session fixation attacks
                             session_regenerate_id(true);
                             // save user information from database into session
-                            $_SESSION[self::LOGIN_USER] = $loginUser;
+                            $_SESSION[self::LOGIN_USER] = $login_user;
 
                             // return to top page
                             header('Location: ' . BLOG_TOP);
@@ -87,7 +87,7 @@
         */
         public static function logout()
         {
-            if ( isset($_SESSION['loginUserModel']) ) {
+            if ( isset($_SESSION[self::LOGIN_USER]) ) {
                 // clear all session variables
                 $_SESSION = array();
                 // delete session cookies
