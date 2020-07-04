@@ -5,7 +5,9 @@
 
     use classes\common\Database;
     use classes\common\Utility;
+    use classes\dao\DraftDao;
     use classes\dao\EntryDao;
+    use classes\models\Draft;
     use classes\models\Entry;
 
     /**
@@ -23,10 +25,10 @@
         public static function postEntry($entry_data)
         {
             // retrieve user information from session
-            $loginUser = $_SESSION['loginUserModel'];
+            $login_user = $_SESSION['loginUserModel'];
             // add user information to input data
-            $entry_data['user_id'] = $loginUser->user_id;
-            $entry_data['entry_id'] = $loginUser->login_id . '-' . date('ymd-Hi');
+            $entry_data['user_id'] = $login_user->user_id;
+            $entry_data['entry_id'] = $login_user->login_id . '-' . date('ymd-Hi');
             $stripped = Utility::removeButtonInput($entry_data);
             // begin transaction
             Database::transaction();
@@ -152,6 +154,40 @@
 
             return $errors;
         }
+
+        // -------------------------methods pertaining to drafts ---------------------------------------
+
+        /**
+        * saves currently input data as draft
+        * @param array $input_data
+        * @return void
+        */
+        public static function saveDraft($input_data)
+        {
+            // remove button input from input data
+            $stripped = Utility::removeButtonInput($input_data);
+            // begin transaction
+            Database::transaction();
+            // if updating existing draft, simply update using input data
+            if ( isset($_SESSION['targetDraft']) ) {
+                DraftDao::updateDraft($_SESSION['targetDraft'], $stripped);
+                // commit transaction
+                Database::commit();
+            } else {
+                // add user ID from session into input data array
+                $stripped['user_id'] = $_SESSION['loginUserModel']->user_id;
+                // if draft based on edits to an existing entry, then add its ID to input data array
+                if ( isset( $_SESSION['targetEntry']) ) {
+                    $stripped['entry_id'] = $_SESSION['targetEntry']->entry_id;
+                }
+                // create new draft
+                DraftDao::createDraft($stripped);
+                // commit transaction
+                Database::commit();
+            }
+        }
+
+
 
     }
 
