@@ -168,9 +168,9 @@
             $stripped = Utility::removeButtonInput($input_data);
             // begin transaction
             Database::transaction();
-            // if updating existing draft, simply update using input data
+            // if editing existing draft, update using input data and save updated draft into session
             if ( isset($_SESSION['targetDraft']) ) {
-                DraftDao::updateDraft($_SESSION['targetDraft'], $stripped);
+                $_SESSION['targetDraft'] = DraftDao::updateDraft($_SESSION['targetDraft'], $stripped);
                 // commit transaction
                 Database::commit();
             } else {
@@ -178,16 +178,35 @@
                 $stripped['user_id'] = $_SESSION['loginUserModel']->showPrimaryKey();
                 // if draft based on edits to an existing entry, then add its ID to input data array
                 if ( isset( $_SESSION['targetEntry']) ) {
-                    $stripped['entry_id'] = $_SESSION['targetEntry']->entry_id;
+                    $stripped['entry_id'] = $_SESSION['targetEntry']->showPrimaryKey();
                 }
-                // create new draft
-                DraftDao::createDraft($stripped);
+                // set draft ID
+                $stripped['draft_id'] = $_SESSION['loginUserModel']->login_id . '-' . date('ymd-Hi') . '-d';
+                // create new draft and save into session
+                $_SESSION['targetDraft'] = DraftDao::createDraft($stripped);
                 // commit transaction
                 Database::commit();
+
             }
         }
 
-
+        /**
+        * discards draft set in session from database
+        * @return void
+        */
+        public static function discardDraft()
+        {
+            // initialize variables needed for removal
+            $delete = array('del_flag' => 1);
+            // begin transaction
+            Database::transaction();
+            // flag entry for removal
+            DraftDao::updateDraft($_SESSION['targetDraft'], $delete);
+            // remove entry from database
+            DraftDao::deleteDraft();
+            // commit transaction
+            Database::commit();
+        }
 
     }
 

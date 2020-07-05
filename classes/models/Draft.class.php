@@ -11,18 +11,14 @@
     {
 
         private const DEFAULT = array(
-            'user_id' => '',
-            'entry_id' => '',
+            'draft_id' => '',
             'entry_title' => '',
             'entry_content' => '',
-            'update_flag' => 0,
-            'del_flag' => 0
         );
 
-        function __construct($args = self::DEFAULT, $pub = null)
+        function __construct($args = self::DEFAULT)
         {
-            $pub = array( 'entry_id', 'entry_title', 'entry_content', 'update_flag', 'del_flag' );
-            parent::__construct($args, $pub);
+            parent::__construct($args);
         }
     }
 

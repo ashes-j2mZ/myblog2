@@ -15,15 +15,15 @@
         private const TABLE_NAME = 'draft';
 
         /**
-         * get draft from associated entry ID
+         * get draft from associated draft ID
          * @param string $entry_id
          * @return Draft
          */
-        public static function findDraft($entry_id)
+        public static function findDraft($draft_id)
         {
             $search = array(
-                'type' => 'entry_id',
-                'value' => $entry_id
+                'type' => 'draft_id',
+                'value' => $draft_id
             );
 
             $result = parent::find(self::TABLE_NAME, $search);
@@ -31,27 +31,52 @@
         }
 
         /**
-         * update draft
+         * update draft in database and return updated draft model
          * @param Draft $draft
-         * @return bool
+         * @return Draft
          */
-        public static function editDraft(Draft $draft, $edit_data)
+        public static function updateDraft(Draft $draft, $edit_data)
         {
-            $limit = array('entry_id' => $draft->entry_id);
+            $limit = array('draft_id' => $draft->draft_id);
 
-            return parent::update(self::TABLE_NAME, $edit_data, $limit);
+            parent::update(self::TABLE_NAME, $edit_data, $limit);
+            return self::findDraft($draft->draft_id);
         }
 
         /**
-         * create new draft
+         * create new draft in database and return created draft model
          * @param array $draft_data
-         * @return int
+         * @return Draft
          */
         public static function createDraft(array $draft_data)
         {
-            return parent::create(self::TABLE_NAME, $draft_data);
+            parent::create(self::TABLE_NAME, $draft_data);
+            return self::findDraft($draft_data['draft_id']);
         }
 
+        /**
+        * remove flagged draft from database
+        * @return bool
+        */
+        public static function deleteDraft()
+        {
+            return parent::delete(self::TABLE_NAME);
+        }
+
+        /**
+         * find primary key associated with given draft
+         * @param Draft $draft
+         * @return int
+         */
+        public static function getPrimaryKey(Draft $draft)
+        {
+            $search = array(
+                'type' => 'draft_id',
+                'value' => $entry->draft_id
+            );
+            $result = parent::getKey(parent::PRIMARY_KEY, self::TABLE_NAME, $search);
+            return (int)reset($result);
+        }
 
     }
 

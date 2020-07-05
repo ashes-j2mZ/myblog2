@@ -11,7 +11,11 @@
         header('Location: ' . BLOG_TOP);
     }
 
+    var_dump($_SESSION['targeEntry']);
+
     // initialize variables
+    $_SESSION['targetDraft'] = null;
+    $_SESSION['targeEntry'] = null;
     $sanitized = array();
     $input_errors = array();
     $page_flag = 0;
@@ -41,6 +45,11 @@
         if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
             // add information to database
             EntryController::postEntry($sanitized);
+            // discard associated draft if set in session
+            if ( isset($_SESSION['targetDraft']) ) {
+                EntryController::discardDraft();
+                unset( $_SESSION['targetDraft'] );
+            }
             // move to completion page and unset input variables
             $page_flag = 2;
             unset($_POST);
@@ -104,11 +113,11 @@
             <form action="" method="post">
                 <div class="element_wrap">
                     <label for="entry_title">Title</label>
-                    <input type="text" name="entry_title" maxlength="50" placeholder="Enter a title for your new blog post..." value="<?php echo !empty($sanitized['entry_title']) ?  $sanitized['entry_title'] : ''; ?>">
+                    <input type="text" name="entry_title" maxlength="50" placeholder="Enter a title for your new blog post..." value="<?php echo ( !empty($sanitized['entry_title']) || isset($_SESSION['targetDraft']) ) ?  $sanitized['entry_title'] : ''; ?>">
                 </div>
                 <div class="element_wrap">
                     <label for="entry_content">Post</label>
-                    <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo !empty($sanitized['entry_content']) ?  $sanitized['entry_content'] : ''; ?></textarea>
+                    <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo ( !empty($sanitized['entry_content']) || isset($_SESSION['targetDraft']) ) ?  $sanitized['entry_content'] : ''; ?></textarea>
                 </div>
                 <input type="submit" name="btn_save" value="Save as draft">
                 <input type="submit" name="btn_confirm" value="Check post">
