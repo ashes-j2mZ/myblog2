@@ -40,7 +40,7 @@
                     $author = $value['author']->display_name;
                     $date = substr($value['entry']->last_updated, 0, 10);
                     echo '<tr>';
-                    echo '<td><a href="entry.php?entry_id=' . $entry_id . '">' . $title . '</a></td>';
+                    echo '<td><a href="entry_view.php?entry_id=' . $entry_id . '">' . $title . '</a></td>';
                     echo '<td><a href="user.php?id=' . $user_id . '">' . $author . '</a></td>';
                     echo '<td>' . $date . '</td>';
                     echo '</tr>';
@@ -50,7 +50,7 @@
         <div class="element_wrap">
             <?php if ( LoginController::checkLogin() ) : ?>
                 <p>Not <?php echo explode(' ', $username)[0] . "?" ?><br>Sign in to your account from <a href="login.php">here</a>.</p><br>
-                <a href="new_post.php"><button type="button" name="btn_submit">New blog post</button></a>
+                <a href="entry_new.php"><button type="button" name="btn_submit">New blog post</button></a>
                 <a href="logout.php"><button type="button" name="btn_logout">Sign out</button></a>
             <?php else : ?>
                 <p>Please login or register from here.</p>

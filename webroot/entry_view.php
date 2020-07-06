@@ -7,6 +7,7 @@
 
     // retrieve entry to view
     $entry = EntryController::viewEntry();
+
     if ( is_null($entry) ) {
         // redirect to top page
         header('Location: ' . BLOG_TOP);
@@ -36,13 +37,13 @@
         </div>
         <?php if ($is_author) : ?>
             <p>Edit or remove your post from here.</p><br>
-            <form action="edit_post.php" method="get">
+            <form action="entry_edit.php" method="get">
                 <div class="element_wrap">
                     <button type="submit" value="btn_edit">Edit post</button>
                     <input type="hidden" name="entry_id" value="<?php echo $entry->entry_id; ?>">
                 </div>
             </form>
-            <form action="delete_post.php" method="get">
+            <form action="entry_delete.php" method="get">
                 <div class="element_wrap">
                     <button type="submit" value="btn_delete">Remove post</button>
                     <input type="hidden" name="entry_id" value="<?php echo $entry->entry_id; ?>">

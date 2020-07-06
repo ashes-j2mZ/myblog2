@@ -57,7 +57,7 @@
         <?php elseif ($page_flag === 1): ?>
             <h2>Entry successfully removed.<br>Return to top page or your user page.</h2>
             <a href="<?php echo BLOG_TOP; ?>"><button type="button" name="btn_top">My Blog Top</button></a>
-            <a href="<?php echo 'user.php?user_id=' . LoginController::getLoginUser()->user_id; ?>"><button type="button" name="btn_top">Your user page</button></a>
+            <a href="<?php echo 'user.php?id=' . LoginController::getLoginUser()->showPrimaryKey(); ?>"><button type="button" name="btn_top">Your user page</button></a>
         <?php endif ?>
     </body>
 </html>

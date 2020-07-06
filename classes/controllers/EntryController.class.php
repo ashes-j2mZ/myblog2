@@ -186,7 +186,6 @@
                 $_SESSION['targetDraft'] = DraftDao::createDraft($stripped);
                 // commit transaction
                 Database::commit();
-
             }
         }
 

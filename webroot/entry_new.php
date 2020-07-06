@@ -11,18 +11,14 @@
         header('Location: ' . BLOG_TOP);
     }
 
-    var_dump($_SESSION['targeEntry']);
-
     // initialize variables
-    $_SESSION['targetDraft'] = null;
-    $_SESSION['targeEntry'] = null;
     $sanitized = array();
     $input_errors = array();
     $page_flag = 0;
     $save_flag = 0;
 
     // sanitize input
-    if (!empty($_POST)) {
+    if ( !empty($_POST) ) {
         $sanitized = Utility::sanitize($_POST);
     }
 
@@ -33,7 +29,7 @@
     }
 
     // Switch between registration, confirmation and completion pages using page flag.
-    if (!empty($_POST['btn_confirm'])) {
+    if ( !empty($_POST['btn_confirm']) ) {
         // Validate input before moving to confimation page.
         // Display errors if input inappropriate.
         $input_errors = EntryController::validate($sanitized);
@@ -41,7 +37,7 @@
             $page_flag = 1;
             $_SESSION['page'] = true;
         }
-    } elseif (!empty($_POST['btn_submit'])) { // move to completion page
+    } elseif ( !empty($_POST['btn_submit']) ) { // move to completion page
         if ( !empty($_SESSION['page']) && $_SESSION['page'] === true ) {
             // add information to database
             EntryController::postEntry($sanitized);
@@ -55,6 +51,12 @@
             unset($_POST);
             unset($sanitized);
             unset($input_errors);
+            foreach ($_SESSION as $key => $value) {
+                // unset all session variables except user information
+                if ($key !== 'loginUserModel') {
+                    unset($_SESSION[$key]);
+                }
+            }
         }
     } else {
         $page_flag = 0;

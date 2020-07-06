@@ -36,7 +36,7 @@
                     $preview = substr($value['entry']->entry_content, 0, 20) . '...';
                     $date = substr($value['entry']->last_updated, 0, 10);
                     echo '<tr>';
-                    echo '<td><a href="entry.php?entry_id=' . $id . '">' . $title . '</a></td>';
+                    echo '<td><a href="entry_view.php?entry_id=' . $id . '">' . $title . '</a></td>';
                     echo '<td>' . $preview . '</td>';
                     echo '<td>' . $date . '</td>';
                     echo '</tr>';
@@ -44,7 +44,7 @@
         </table><br>
         <div class="element_wrap">
             <?php if ( $is_login_user ) : ?>
-                <a href="new_post.php"><button type="button" name="btn_submit">New blog post</button></a>
+                <a href="entry_new.php"><button type="button" name="btn_submit">New blog post</button></a>
                 <a href="logout.php"><button type="button" name="btn_logout">Sign out</button></a>
             <?php endif ?>
         </div>

@@ -23,14 +23,13 @@
     $save_flag = 0;
 
     // sanitize input
-    if (!empty($_POST)) {
+    if ( !empty($_POST) ) {
         $sanitized = Utility::sanitize($_POST);
     }
 
     // save current input as draft when save button entered
     if ( !empty($_POST['btn_save']) ) {
         $save_flag = 1;
-        $sanitized = Utility::sanitize($_POST);
         EntryController::saveDraft($sanitized);
     }
 
@@ -57,7 +56,12 @@
             unset($_POST);
             unset($sanitized);
             unset($input_errors);
-            unset( $_SESSION['targetEntry'] );
+            foreach ($_SESSION as $key => $value) {
+                // unset all session variables except user information
+                if ($key !== 'loginUserModel') {
+                    unset($_SESSION[$key]);
+                }
+            }
         }
     } else {
         $page_flag = 0;
