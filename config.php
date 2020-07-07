@@ -29,6 +29,6 @@
     /**
     * path to entry page for redirection
     */
-    define('BLOG_ENTRY', REDIRECT_PATH . '/entry.php?entry_id=');
+    define('BLOG_ENTRY', REDIRECT_PATH . '/entry_view.php?entry_id=');
 
  ?>

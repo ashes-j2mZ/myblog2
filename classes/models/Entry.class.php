@@ -39,7 +39,7 @@
         }
 
         /**
-        * retrieve primary key of this entry's author
+        * retrieve primary key of this entry
         * @return int
         */
         public function showPrimaryKey()

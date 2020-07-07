@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月3日 金曜日 10:49 -->
+<!-- last edited 2020年7月7日 火曜日 09:49 -->
 <?php
     require_once '../common.php';
 
@@ -44,7 +44,9 @@
         </table><br>
         <div class="element_wrap">
             <?php if ( $is_login_user ) : ?>
+
                 <a href="entry_new.php"><button type="button" name="btn_submit">New blog post</button></a>
+                <a href="draft_list.php?id=<?php echo $_SESSION['loginUserModel']->showPrimaryKey(); ?>"><button type="button" name="btn_draft">Browse your  drafts</button></a>
                 <a href="logout.php"><button type="button" name="btn_logout">Sign out</button></a>
             <?php endif ?>
         </div>

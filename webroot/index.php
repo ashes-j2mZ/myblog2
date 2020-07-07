@@ -1,11 +1,17 @@
-<!-- last edited 2020年7月4日 土曜日 17:41 -->
+<!-- last edited 2020年7月7日 火曜日 09:49 -->
 <?php
     require_once '../common.php';
 
     use classes\controllers\LoginController;
     use classes\controllers\EntryController;
 
+    // initialize variables and all session parameters other than login information
     $username = null;
+    foreach ($_SESSION as $key => $value) {
+        if ($key !== 'loginUserModel') {
+            unset($_SESSION[$key]);
+        }
+    }
 
     if ( LoginController::checkLogin() ) {
         $username = LoginController::getLoginUser()->display_name;

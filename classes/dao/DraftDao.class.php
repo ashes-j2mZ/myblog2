@@ -16,7 +16,7 @@
 
         /**
          * get draft from associated draft ID
-         * @param string $entry_id
+         * @param string $draft_id
          * @return Draft
          */
         public static function findDraft($draft_id)
@@ -28,6 +28,32 @@
 
             $result = parent::find(self::TABLE_NAME, $search);
             return isset($result[0]) ? new Draft( reset($result) ) : null;
+        }
+
+        /**
+        * get all drafts matching given user ID (primary key)
+        * @param int $user_id
+        * @return mixed
+        */
+        public static function findUserDrafts( $user_id, $order = array('parameter' => 'last_updated', 'direction' => 'DESC') )
+        {
+            $search = array(
+                'type' => 'user_id',
+                'value' => $user_id
+            );
+
+            $results = parent::find(self::TABLE_NAME, $search, $order);
+            // return array of draft objects, or FALSE if no drafts exist
+            if ( empty($results) ) {
+                return false;
+            } else {
+                $user_drafts = array();
+                foreach ($results as $value) {
+                    $user_drafts[] = new Draft($value);
+                }
+                return $user_drafts;
+            }
+
         }
 
         /**
@@ -72,7 +98,7 @@
         {
             $search = array(
                 'type' => 'draft_id',
-                'value' => $entry->draft_id
+                'value' => $draft->draft_id
             );
             $result = parent::getKey(parent::PRIMARY_KEY, self::TABLE_NAME, $search);
             return (int)reset($result);
