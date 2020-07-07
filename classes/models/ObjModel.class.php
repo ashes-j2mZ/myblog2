@@ -1,5 +1,5 @@
 <?php
-// last edited 2020年6月30日 火曜日 11:02
+// last edited 2020年7月7日 火曜日 14:55
 
     namespace classes\models;
     /**
@@ -15,18 +15,29 @@
         /**
          * initializes object with parameters given in argument
          * @param array $args
+         * @param array $pub
          */
-        public function __construct($args = array())
+        public function __construct($args = array(), $pub = array())
         {
             foreach ($args as $key => $value) {
-                $this->properties[$key] = $value;
+                if (array_key_exists($key, $pub)) {
+                    // cast values as appropriate types
+                    if ( preg_match('/^\d{4}-\d{2}-\d{2}/', $value) === 1 ) { // check if value is datetime
+                        $this->properties[$key] = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
+                    } elseif ( preg_match('/^\d+$/', $value) === 1 ) { // check if value is integer
+                        $this->properties[$key] = (int)$value;
+                    } else {
+                        $this->properties[$key] = $value;
+                    }
+                }
+
             }
         }
 
         /**
-        * returns string representation of object
-        * @return string $string
-        */
+         * returns string representation of object
+         * @return string $string
+         */
         public function __toString()
         {
             $string = '';
@@ -37,11 +48,11 @@
         }
 
         /**
-        * enables access to instance properties from outside class
-        * throws notice if property does not exist
-        * @param mixed $key
-        * @return mixed
-        */
+         * enables access to instance properties from outside class
+         * throws notice if property does not exist
+         * @param mixed $key
+         * @return mixed
+         */
         public function __get($key)
         {
             if ( array_key_exists($key, $this->properties) ) {
@@ -57,11 +68,11 @@
         }
 
         /**
-        * enables instance properties to be set from outside class
-        * throws notice if property does not exist
-        * @param mixed $key, $value
-        * @return void
-        */
+         * enables instance properties to be set from outside class
+         * throws notice if property does not exist
+         * @param mixed $key, $value
+         * @return void
+         */
         public function __set($key, $value)
         {
             if ( array_key_exists($key, $this->properties) ) {

@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月3日 金曜日 13:13
+    // last edited 2020年7月7日 火曜日 14:55
 
     namespace classes\dao;
 
@@ -31,10 +31,10 @@
         }
 
         /**
-        * get all drafts matching given user ID (primary key)
-        * @param int $user_id
-        * @return mixed
-        */
+         * get all drafts matching given user ID (primary key)
+         * @param int $user_id
+         * @return mixed
+         */
         public static function findUserDrafts( $user_id, $order = array('parameter' => 'last_updated', 'direction' => 'DESC') )
         {
             $search = array(
@@ -53,7 +53,6 @@
                 }
                 return $user_drafts;
             }
-
         }
 
         /**
@@ -81,9 +80,9 @@
         }
 
         /**
-        * remove flagged draft from database
-        * @return bool
-        */
+         * remove flagged draft from database
+         * @return bool
+         */
         public static function deleteDraft()
         {
             return parent::delete(self::TABLE_NAME);

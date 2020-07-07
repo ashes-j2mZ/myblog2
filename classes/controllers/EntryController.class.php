@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月4日 土曜日 17:41
+    // last edited 2020年7月7日 火曜日 14:55
 
     namespace classes\controllers;
 
@@ -206,7 +206,7 @@
                 $new_drafts = array();
                 $edit_drafts = array();
                 foreach ($drafts as $value) {
-                    if ($value->entry_id == null) { // draft not associated with existing entry
+                    if ($value->entry_id === null) { // draft not associated with existing entry
                         $new_drafts[] = $value;
                     } else { // draft contains edits to existing entry
                         $edit_drafts[] = $value;

@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月3日 金曜日 13:08
+    // last edited 2020年7月7日 火曜日 14:55
 
     namespace classes\models;
 
@@ -14,27 +14,29 @@
     {
 
         private const DEFAULT = array(
+            'entry_id' => '',
             'draft_id' => '',
             'entry_title' => '',
             'entry_content' => '',
+            'last_updated' => ''
         );
 
-        function __construct($args = self::DEFAULT)
+        public function __construct($args = self::DEFAULT, $pub = self::DEFAULT)
         {
-            parent::__construct($args);
+            parent::__construct($args, $pub);
         }
 
         /**
          * retrieve this draft's author
-         * @return User
+         * @return User $author
          */
         public function showAuthor()
         {
             $login_id = preg_replace('/((-\d{6}-\d{4})(-d|-nd))$/', '', $this->draft_id);
             // retrieve user information associated with this entry
-            $user = UserDao::findUser($login_id);
+            $author = UserDao::findUser($login_id);
             // show user's display name
-            return is_null($user) ? 'Unknown author' : $user;
+            return is_null($author) ? 'Unknown author' : $author;
         }
 
         /**

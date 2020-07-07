@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月7日 火曜日 09:49 -->
+<!-- last edited 2020年7月7日 火曜日 14:55 -->
 <?php
     require_once '../common.php';
 
@@ -44,7 +44,7 @@
                     $title = $value['entry']->entry_title;
                     $user_id = $value['author']->showPrimaryKey();
                     $author = $value['author']->display_name;
-                    $date = substr($value['entry']->last_updated, 0, 10);
+                    $date = $value['entry']->last_updated->format('Y/m/d');
                     echo '<tr>';
                     echo '<td><a href="entry_view.php?entry_id=' . $entry_id . '">' . $title . '</a></td>';
                     echo '<td><a href="user.php?id=' . $user_id . '">' . $author . '</a></td>';

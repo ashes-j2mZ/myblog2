@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月7日 火曜日 09:49 -->
+<!-- last edited 2020年7月7日 火曜日 14:55 -->
 <?php
     require_once '../common.php';
 
@@ -55,7 +55,7 @@
                     $draft_id = $new_drafts[$i]->draft_id;
                     $title = is_null($new_drafts[$i]->entry_title) ? '(No title yet)' : $new_drafts[$i]->entry_title;
                     $content = is_null($new_drafts[$i]->entry_content) ? '(No body yet)' : mb_substr($new_drafts[$i]->entry_content, 0, 20) . '...';
-                    $date = substr($new_drafts[$i]->last_updated, 0, 10);
+                    $date = $new_drafts[$i]->last_updated->format('Y/m/d');
                     echo '<tr>';
                     echo '<td>' . ($i + 1) . '</td>';
                     echo '<td><a href="draft_view.php?draft_id=' . $draft_id . '">' . $title . '</a></td>';
@@ -77,7 +77,7 @@
                     $draft_id = $edit_drafts[$i]->draft_id;
                     $title = is_null($edit_drafts[$i]->entry_title) ? '(No title yet)' : $edit_drafts[$i]->entry_title;
                     $content = is_null($edit_drafts[$i]->entry_content) ? '(No body yet)' : mb_substr($edit_drafts[$i]->entry_content, 0, 20) . '...';
-                    $date = substr($edit_drafts[$i]->last_updated, 0, 10);
+                    $date = $edit_drafts[$i]->last_updated->format('Y/m/d');
                     echo '<tr>';
                     echo '<td>' . ($i + 1) . '</td>';
                     echo '<td><a href="draft_view.php?draft_id=' . $draft_id . '">' . $title . '</a></td>';

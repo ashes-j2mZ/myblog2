@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月4日 土曜日 17:41 -->
+<!-- last edited 2020年7月7日 火曜日 14:55 -->
 <?php
     require_once '../common.php';
 
@@ -13,7 +13,7 @@
         header('Location: ' . BLOG_TOP);
     } else {
         $author = $entry->showAuthor();
-        $date = substr($entry->last_updated, 0, 10);
+        $date = $entry->last_updated->format('F jS, Y');
         $is_author = ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->login_id == $author->login_id ) );
     }
 

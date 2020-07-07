@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月7日 火曜日 09:49 -->
+<!-- last edited 2020年7月7日 火曜日 14:55 -->
 <?php
     require_once '../common.php';
 
@@ -9,6 +9,7 @@
     $user = UserDao::findUser( filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) );
     $user_id = $user->showPrimaryKey();
     $display_name = $user->display_name;
+    $reg_date = $user->register_date->format('F jS, Y');
     $latest = EntryController::showLatest($user_id);
     $is_login_user = ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->showPrimaryKey() == $user_id ) );
 ?>
@@ -22,6 +23,7 @@
     </head>
     <body>
         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a>: <?php echo $display_name; ?></h1>
+        <h2 style="text-align:left">My Blog user since <?php echo $reg_date; ?></h2>
         <p><?php echo $is_login_user ? 'Welcome to your user page, ' . explode(' ', $display_name)[0] . '.' : ''; ?></p><br>
         <table border="1" align="center">
             <tr>
@@ -34,7 +36,7 @@
                     $id = $value['entry']->entry_id;
                     $title = $value['entry']->entry_title;
                     $preview = substr($value['entry']->entry_content, 0, 20) . '...';
-                    $date = substr($value['entry']->last_updated, 0, 10);
+                    $date = $value['entry']->last_updated->format('Y/m/d');
                     echo '<tr>';
                     echo '<td><a href="entry_view.php?entry_id=' . $id . '">' . $title . '</a></td>';
                     echo '<td>' . $preview . '</td>';

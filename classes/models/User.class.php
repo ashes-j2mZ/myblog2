@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月2日 木曜日 16:55
+    // last edited 2020年7月7日 火曜日 14:55
     namespace classes\models;
 
     use classes\dao\UserDao;
@@ -16,9 +16,9 @@
             'register_date' => ''
         );
 
-        public function __construct($args = self::DEFAULT)
+        public function __construct($args = self::DEFAULT, $pub = self::DEFAULT)
         {
-            parent::__construct($args);
+            parent::__construct($args, $pub);
         }
 
         /**
