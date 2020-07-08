@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月7日 火曜日 14:55
+    // last edited 2020年7月8日 水曜日 11:22
 
     namespace classes\controllers;
 
@@ -39,23 +39,29 @@
         }
 
         /**
-         * find and display blog entry with given entry ID
+         * find and display blog entry with entry ID sent via GET or via POST
          * @return Entry $entry
          */
         public static function viewEntry()
         {
-            // check if entry ID has been submitted via GET
-            if ( isset($_GET['entry_id']) && is_string($_GET['entry_id']) ) {
+            // initialize filter options and search term
+            $entry_id = '';
+            // checks data type of entry ID given
+            $get = self::filterIDType('GET');
+            $post = self::filterIDType('POST');
+            // set search term and search for associated draft
+            $entry_id = ($get != false) ? $get : ( ($post != false) ? $post : false );
+            if ( $entry_id !== false ) {
                 // begin transaction
                 Database::transaction();
-                // check if entry exists
-                $entry = EntryDao::findEntry($_GET['entry_id']);
+                // check if draft exists
+                $entry = EntryDao::findEntry($entry_id);
                 if ( !is_null($entry) ) {
-                    // commit transaction and return retrieved entry
+                    // commit transaction and return retrieved draft
                     Database::commit();
-                    return $entry;
+                    $_SESSION['targetEntry'] = $entry;
                 } else {
-                    // commit transaction
+                    // commit transaction and return null
                     Database::commit();
                 }
             }
@@ -160,25 +166,50 @@
             return $errors;
         }
 
+        private static function filterIDType($request)
+        {
+            $regexp_filter = array('options' => array(
+                'regexp' => '/^[A-Za-z\d]([A-Za-z\d\.\-]+)(-\d{6}-\d{4})$/'
+            ));
+            switch ($request) {
+                case 'GET' :
+                    return (filter_input(INPUT_GET, 'entry_id', FILTER_VALIDATE_INT) != null) ? filter_input(INPUT_GET, 'entry_id', FILTER_VALIDATE_INT) : filter_input(INPUT_GET, 'entry_id', FILTER_VALIDATE_REGEXP, $regexp_filter);
+                    break;
+                case 'POST' :
+                    return (filter_input(INPUT_POST, 'entry_id', FILTER_VALIDATE_INT) != null) ? filter_input(INPUT_POST, 'entry_id', FILTER_VALIDATE_INT) : filter_input(INPUT_POST, 'entry_id', FILTER_VALIDATE_REGEXP, $regexp_filter);
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
+
         // -------------------------methods pertaining to drafts ---------------------------------------
         /**
-         * finds and displays blog entry with given draft ID
+         * finds and displays draft with draft ID sent via GET or POST
          * @return Draft $draft
          */
         public static function viewDraft()
         {
-            // check if draft ID has been submitted via GET
-            if ( isset($_GET['draft_id']) && is_string($_GET['draft_id']) ) {
+            // initialize filter options and search term
+            $filter = array('options' => array('regexp' => '/^[A-Za-z\d]([A-Za-z\d\.\-]+)-\d{6}-\d{4}(-ed|-nd)$/'));
+            $draft_id = '';
+            // checks for whether draft ID has been submitted via GET or via POST
+            $get = filter_input(INPUT_GET, 'draft_id', FILTER_VALIDATE_REGEXP, $filter);
+            $post = filter_input(INPUT_POST, 'draft_id', FILTER_VALIDATE_REGEXP, $filter);
+            // set search term and search for associated draft
+            $draft_id = ($get != null) ? $get : ( ($post != null) ? $post : null );
+            if ( $draft_id !== null ) {
                 // begin transaction
                 Database::transaction();
                 // check if draft exists
-                $draft = DraftDao::findDraft($_GET['entry_id']);
+                $draft = DraftDao::findDraft($draft_id);
                 if ( !is_null($draft) ) {
                     // commit transaction and return retrieved draft
                     Database::commit();
-                    return $draft;
+                    $_SESSION['targetDraft'] = $draft;
                 } else {
-                    // commit transaction
+                    // commit transaction and return null
                     Database::commit();
                 }
             }

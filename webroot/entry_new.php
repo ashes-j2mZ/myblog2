@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月4日 土曜日 17:41 -->
+<!-- last edited 2020年7月8日 水曜日 11:57 -->
 <?php
     require_once '../common.php';
 
@@ -18,9 +18,13 @@
     $save_flag = 0;
 
     // sanitize input
-    if ( !empty($_POST) ) {
+    if ( isset($_POST['entry_title']) && isset($_POST['entry_content']) ) {
         $sanitized = Utility::sanitize($_POST);
     }
+
+    // set text to display initially when page is loaded
+    $title = !empty($sanitized) ? $sanitized['entry_title'] : (isset($_SESSION['targetDraft']) ? $_SESSION['targetDraft']->entry_title : "");
+    $body = !empty($sanitized) ? $sanitized['entry_content'] : (isset($_SESSION['targetDraft']) ? $_SESSION['targetDraft']->entry_content : "");
 
     // save current input as draft when save button entered
     if ( !empty($_POST['btn_save']) ) {
@@ -115,11 +119,11 @@
             <form action="" method="post">
                 <div class="element_wrap">
                     <label for="entry_title">Title</label>
-                    <input type="text" name="entry_title" maxlength="50" placeholder="Enter a title for your new blog post..." value="<?php echo ( !empty($sanitized['entry_title']) || isset($_SESSION['targetDraft']) ) ?  $sanitized['entry_title'] : ''; ?>">
+                    <input type="text" name="entry_title" maxlength="50" placeholder="Enter a title for your new blog post..." value="<?php echo $title; ?>">
                 </div>
                 <div class="element_wrap">
                     <label for="entry_content">Post</label>
-                    <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo ( !empty($sanitized['entry_content']) || isset($_SESSION['targetDraft']) ) ?  $sanitized['entry_content'] : ''; ?></textarea>
+                    <textarea name="entry_content" rows="10" cols="100" maxlength="5000" placeholder="Write your blog post here..."><?php echo $body; ?></textarea>
                 </div>
                 <input type="submit" name="btn_save" value="Save as draft">
                 <input type="submit" name="btn_confirm" value="Check post">

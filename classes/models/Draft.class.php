@@ -32,7 +32,7 @@
          */
         public function showAuthor()
         {
-            $login_id = preg_replace('/((-\d{6}-\d{4})(-d|-nd))$/', '', $this->draft_id);
+            $login_id = preg_replace('/((-\d{6}-\d{4})(-ed|-nd))$/', '', $this->draft_id);
             // retrieve user information associated with this entry
             $author = UserDao::findUser($login_id);
             // show user's display name

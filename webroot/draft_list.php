@@ -1,4 +1,4 @@
-<!-- last edited 2020年7月7日 火曜日 14:55 -->
+<!-- last edited 2020年7月8日 水曜日 11:22 -->
 <?php
     require_once '../common.php';
 
@@ -53,8 +53,8 @@
                 </tr>
                 <?php for ($i=0; $i < $new_count; $i++) {
                     $draft_id = $new_drafts[$i]->draft_id;
-                    $title = is_null($new_drafts[$i]->entry_title) ? '(No title yet)' : $new_drafts[$i]->entry_title;
-                    $content = is_null($new_drafts[$i]->entry_content) ? '(No body yet)' : mb_substr($new_drafts[$i]->entry_content, 0, 20) . '...';
+                    $title = ($new_drafts[$i]->entry_title == '') ? '(No title yet)' : $new_drafts[$i]->entry_title;
+                    $content = ($new_drafts[$i]->entry_content == '') ? '(No body yet)' : mb_substr($new_drafts[$i]->entry_content, 0, 20) . '...';
                     $date = $new_drafts[$i]->last_updated->format('Y/m/d');
                     echo '<tr>';
                     echo '<td>' . ($i + 1) . '</td>';
