@@ -1,15 +1,18 @@
-<!-- last edited 2020年7月3日 金曜日 16:58 -->
+<!-- last edited 2020年7月8日 水曜日 11:36 -->
 <?php
     require_once '../common.php';
 
     use classes\controllers\EntryController;
     use classes\controllers\LoginController;
 
-    $_SESSION['targetEntry'] = EntryController::viewEntry();
+    // retrieve entry to view if not set
+    if (!isset($_SESSION['targetEntry'])) {
+        EntryController::viewEntry();
+    }
     $login_user_id = LoginController::getLoginUser()->showPrimaryKey();
 
     // redirect to top page if not logged in or if entry doesn't belong to user currently logged in
-    if ( !LoginController::checkLogin() || ($login_user_id !== (int)$_SESSION['targetEntry']->user_id) ) {
+    if ( !LoginController::checkLogin() || ($login_user_id !== $_SESSION['targetEntry']->user_id) ) {
         header('Location: ' . BLOG_TOP);
     }
 
@@ -23,9 +26,8 @@
         unset($_POST);
         unset($_SESSION['targetEntry']);
     } elseif ( !empty($_POST['btn_back']) ) {
-        // redirect to entry page and unset session
+        // redirect to entry page
         header('Location: ' . BLOG_ENTRY . $_SESSION['targetEntry']->entry_id);
-        unset($_SESSION['targetEntry']);
     }
 ?>
 
@@ -57,7 +59,7 @@
         <?php elseif ($page_flag === 1): ?>
             <h2>Entry successfully removed.<br>Return to top page or your user page.</h2>
             <a href="<?php echo BLOG_TOP; ?>"><button type="button" name="btn_top">My Blog Top</button></a>
-            <a href="<?php echo 'user.php?user_id=' . LoginController::getLoginUser()->user_id; ?>"><button type="button" name="btn_top">Your user page</button></a>
+            <a href="<?php echo 'user.php?id=' . $login_user_id; ?>"><button type="button" name="btn_top">Your user page</button></a>
         <?php endif ?>
     </body>
 </html>

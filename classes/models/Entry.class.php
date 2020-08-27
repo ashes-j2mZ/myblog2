@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月4日 土曜日 17:41
+    // last edited 2020年7月7日 火曜日 14:55
 
     namespace classes\models;
 
@@ -18,11 +18,12 @@
             'entry_id' => '',
             'entry_title' => '',
             'entry_content' => '',
+            'last_updated' => ''
         );
 
-        public function __construct($args = self::DEFAULT)
+        public function __construct($args = self::DEFAULT, $pub = self::DEFAULT)
         {
-            parent::__construct($args);
+            parent::__construct($args, $pub);
         }
 
         /**
@@ -39,7 +40,7 @@
         }
 
         /**
-        * retrieve primary key of this entry's author
+        * retrieve primary key of this entry
         * @return int
         */
         public function showPrimaryKey()

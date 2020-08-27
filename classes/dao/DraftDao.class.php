@@ -1,5 +1,5 @@
 <?php
-    // last edited 2020年7月3日 金曜日 13:13
+    // last edited 2020年7月8日 水曜日 11:22
 
     namespace classes\dao;
 
@@ -15,15 +15,15 @@
         private const TABLE_NAME = 'draft';
 
         /**
-         * get draft from associated entry ID
-         * @param string $entry_id
+         * get draft from associated draft ID
+         * @param string $draft_id
          * @return Draft
          */
-        public static function findDraft($entry_id)
+        public static function findDraft($draft_id)
         {
             $search = array(
-                'type' => 'entry_id',
-                'value' => $entry_id
+                'type' => 'draft_id',
+                'value' => $draft_id
             );
 
             $result = parent::find(self::TABLE_NAME, $search);
@@ -31,27 +31,77 @@
         }
 
         /**
-         * update draft
-         * @param Draft $draft
-         * @return bool
+         * get all drafts matching given user ID (primary key)
+         * @param int $user_id
+         * @return mixed
          */
-        public static function editDraft(Draft $draft, $edit_data)
+        public static function findUserDrafts( $user_id, $order = array('parameter' => 'last_updated', 'direction' => 'DESC') )
         {
-            $limit = array('entry_id' => $draft->entry_id);
+            $search = array(
+                'type' => 'user_id',
+                'value' => $user_id
+            );
 
-            return parent::update(self::TABLE_NAME, $edit_data, $limit);
+            $results = parent::find(self::TABLE_NAME, $search, $order);
+            // return array of draft objects, or FALSE if no drafts exist
+            if ( empty($results) ) {
+                return false;
+            } else {
+                $user_drafts = array();
+                foreach ($results as $value) {
+                    $user_drafts[] = new Draft($value);
+                }
+                return $user_drafts;
+            }
         }
 
         /**
-         * create new draft
+         * update draft in database and return updated draft model
+         * @param Draft $draft
+         * @return Draft
+         */
+        public static function updateDraft(Draft $draft, $edit_data)
+        {
+            $limit = array('draft_id' => $draft->draft_id);
+
+            parent::update(self::TABLE_NAME, $edit_data, $limit);
+            return self::findDraft($draft->draft_id);
+        }
+
+        /**
+         * create new draft in database and return created draft model
          * @param array $draft_data
-         * @return int
+         * @return Draft
          */
         public static function createDraft(array $draft_data)
         {
-            return parent::create(self::TABLE_NAME, $draft_data);
+            parent::create(self::TABLE_NAME, $draft_data);
+            return self::findDraft($draft_data['draft_id']);
         }
 
+        /**
+         * remove flagged draft from database
+         * @return bool
+         */
+        public static function deleteDraft()
+        {
+            return parent::delete(self::TABLE_NAME);
+        }
+
+        /**
+         * find primary key associated with given draft
+         * @param Draft $draft
+         * @return int
+         */
+        public static function getPrimaryKey(Draft $draft)
+        {
+            $search = array(
+                'type' => 'draft_id',
+                'value' => $draft->draft_id
+            );
+            $result = parent::getKey(parent::PRIMARY_KEY, self::TABLE_NAME, $search);
+            return (int)reset($result);
+        }
 
     }
 

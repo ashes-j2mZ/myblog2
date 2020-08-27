@@ -1,7 +1,10 @@
 <?php
-    // last edited 2020年7月3日 金曜日 13:08
+    // last edited 2020年7月7日 火曜日 14:55
 
     namespace classes\models;
+
+    use classes\dao\DraftDao;
+    use classes\dao\UserDao;
 
     /**
      * entry draft model class
@@ -11,19 +14,41 @@
     {
 
         private const DEFAULT = array(
-            'user_id' => '',
             'entry_id' => '',
+            'draft_id' => '',
             'entry_title' => '',
             'entry_content' => '',
-            'update_flag' => 0,
-            'del_flag' => 0
+            'last_updated' => ''
         );
 
-        function __construct($args = self::DEFAULT, $pub = null)
+        public function __construct($args = self::DEFAULT, $pub = self::DEFAULT)
         {
-            $pub = array( 'entry_id', 'entry_title', 'entry_content', 'update_flag', 'del_flag' );
             parent::__construct($args, $pub);
         }
+
+        /**
+         * retrieve this draft's author
+         * @return User $author
+         */
+        public function showAuthor()
+        {
+            $login_id = preg_replace('/((-\d{6}-\d{4})(-ed|-nd))$/', '', $this->draft_id);
+            // retrieve user information associated with this entry
+            $author = UserDao::findUser($login_id);
+            // show user's display name
+            return is_null($author) ? 'Unknown author' : $author;
+        }
+
+        /**
+         * retrieve primary key of this draft
+         * @return int
+         */
+        public function showPrimaryKey()
+        {
+            return DraftDao::getPrimaryKey($this);
+        }
+
     }
+
 
 ?>

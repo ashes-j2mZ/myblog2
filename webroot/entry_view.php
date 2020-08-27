@@ -1,20 +1,17 @@
-<!-- last edited 2020年7月4日 土曜日 17:41 -->
+<!-- last edited 2020年7月8日 水曜日 11:22 -->
 <?php
     require_once '../common.php';
 
     use classes\controllers\EntryController;
     use classes\controllers\LoginController;
 
-    // retrieve entry to view
-    $entry = EntryController::viewEntry();
-    if ( is_null($entry) ) {
-        // redirect to top page
-        header('Location: ' . BLOG_TOP);
-    } else {
-        $author = $entry->showAuthor();
-        $date = substr($entry->last_updated, 0, 10);
-        $is_author = ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->login_id == $author->login_id ) );
+    // retrieve entry to view if not set
+    if (!isset($_SESSION['targetEntry'])) {
+        EntryController::viewEntry();
     }
+    $author = $_SESSION['targetEntry']->showAuthor();
+    $date = $_SESSION['targetEntry']->last_updated->format('F jS, Y');
+    $is_author = ( LoginController::checkLogin() && ($_SESSION['loginUserModel']->login_id == $author->login_id ) );
 
 ?>
 
@@ -28,24 +25,24 @@
     <body>
         <h1><a href="<?php echo BLOG_TOP; ?>">My Blog</a></h1>
         <div class="element_wrap">
-            <h2><?php echo $entry->entry_title; ?></h2>
+            <h2><?php echo $_SESSION['targetEntry']->entry_title; ?></h2>
             <p><?php echo 'by ' . $author->display_name . ' on ' . $date; ?></p>
         </div>
         <div class="element_wrap">
-            <p><?php echo nl2br($entry->entry_content); ?></p>
+            <p><?php echo nl2br($_SESSION['targetEntry']->entry_content); ?></p>
         </div>
         <?php if ($is_author) : ?>
             <p>Edit or remove your post from here.</p><br>
-            <form action="edit_post.php" method="get">
+            <form action="entry_edit.php" method="post">
                 <div class="element_wrap">
                     <button type="submit" value="btn_edit">Edit post</button>
-                    <input type="hidden" name="entry_id" value="<?php echo $entry->entry_id; ?>">
+                    <input type="hidden" name="entry_id" value="<?php echo $_SESSION['targetEntry']->entry_id; ?>">
                 </div>
             </form>
-            <form action="delete_post.php" method="get">
+            <form action="entry_delete.php" method="post">
                 <div class="element_wrap">
                     <button type="submit" value="btn_delete">Remove post</button>
-                    <input type="hidden" name="entry_id" value="<?php echo $entry->entry_id; ?>">
+                    <input type="hidden" name="entry_id" value="<?php echo $_SESSION['targetEntry']->entry_id; ?>">
                 </div>
             </form>
         <?php endif ?>

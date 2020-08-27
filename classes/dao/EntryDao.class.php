@@ -19,12 +19,19 @@
          * @param string $entry_id
          * @return Entry
          */
-        public static function findEntry($entry_id)
+        public static function findEntry($id)
         {
-            $search = array(
-                'type' => 'entry_id',
-                'value' => $entry_id
-            );
+            if ( is_int($id) ) {
+                $search = array(
+                    'type' => parent::PRIMARY_KEY,
+                    'value' => $id
+                );
+            } else {
+                $search = array(
+                    'type' => 'entry_id',
+                    'value' => $id
+                );
+            }
 
             $result = parent::find(self::TABLE_NAME, $search);
             return isset($result[0]) ? new Entry( reset($result) ) : null;

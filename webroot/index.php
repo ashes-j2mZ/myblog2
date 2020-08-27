@@ -1,11 +1,17 @@
-<!-- last edited 2020年7月4日 土曜日 17:41 -->
+<!-- last edited 2020年7月7日 火曜日 14:55 -->
 <?php
     require_once '../common.php';
 
     use classes\controllers\LoginController;
     use classes\controllers\EntryController;
 
+    // initialize variables and all session parameters other than login information
     $username = null;
+    foreach ($_SESSION as $key => $value) {
+        if ($key !== 'loginUserModel') {
+            unset($_SESSION[$key]);
+        }
+    }
 
     if ( LoginController::checkLogin() ) {
         $username = LoginController::getLoginUser()->display_name;
@@ -38,9 +44,9 @@
                     $title = $value['entry']->entry_title;
                     $user_id = $value['author']->showPrimaryKey();
                     $author = $value['author']->display_name;
-                    $date = substr($value['entry']->last_updated, 0, 10);
+                    $date = $value['entry']->last_updated->format('Y/m/d');
                     echo '<tr>';
-                    echo '<td><a href="entry.php?entry_id=' . $entry_id . '">' . $title . '</a></td>';
+                    echo '<td><a href="entry_view.php?entry_id=' . $entry_id . '">' . $title . '</a></td>';
                     echo '<td><a href="user.php?id=' . $user_id . '">' . $author . '</a></td>';
                     echo '<td>' . $date . '</td>';
                     echo '</tr>';
@@ -50,7 +56,7 @@
         <div class="element_wrap">
             <?php if ( LoginController::checkLogin() ) : ?>
                 <p>Not <?php echo explode(' ', $username)[0] . "?" ?><br>Sign in to your account from <a href="login.php">here</a>.</p><br>
-                <a href="new_post.php"><button type="button" name="btn_submit">New blog post</button></a>
+                <a href="entry_new.php"><button type="button" name="btn_submit">New blog post</button></a>
                 <a href="logout.php"><button type="button" name="btn_logout">Sign out</button></a>
             <?php else : ?>
                 <p>Please login or register from here.</p>
